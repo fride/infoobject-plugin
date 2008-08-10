@@ -1,0 +1,35 @@
+<!DOCTYPE plugin [
+		<!ELEMENT modelVersion (#PCDATA)>
+		<!ELEMENT vendor (name|email|homepage)*>
+		<!ELEMENT supportedSystems (os)*>
+		<!ELEMENT homepage (#PCDATA)>
+		<!ELEMENT version (#PCDATA)>
+		<!ELEMENT groupId (#PCDATA)>
+		<!ELEMENT mainClass (#PCDATA)>
+		<!ELEMENT os (#PCDATA)>
+		<!ATTLIST os
+				name CDATA #REQUIRED
+				arch CDATA #REQUIRED
+				version CDATA #REQUIRED>
+		<!ELEMENT description (#PCDATA)>
+		<!ELEMENT email (#PCDATA)>
+		<!ELEMENT name (#PCDATA)>
+		<!ELEMENT plugin (groupId|artifactId|version|vendor|name|description|supportedSystems|modelVersion|mainClass)*>
+		<!ELEMENT artifactId (#PCDATA)>
+		]>
+<plugin>
+	<groupId>net.sf.magicmap</groupId>
+	<artifactId>infoobject</artifactId>
+	<version>1.0</version>
+	<vendor>
+		<name>Jan Friderici</name>
+		<email>janfriderici@googlemail.com</email>
+		<homepage>http://www.magicmap.de</homepage>
+	</vendor>
+	<name>InfoObject</name>
+	<description>This plugins provides information infoNodes. Information infoNodes can be used to annotate physical infoNodes and
+		posiions with an uri.
+	</description>
+	<modelVersion>1.0</modelVersion>
+	<mainClass>org.infoobject.magicmap.plugin.InformationObjectPlugin</mainClass>
+</plugin>
