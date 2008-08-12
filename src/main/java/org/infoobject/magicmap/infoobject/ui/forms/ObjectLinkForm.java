@@ -4,13 +4,10 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
+import org.infoobject.magicmap.infoobject.ui.util.InformationObjectCellRenderer;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import org.infoobject.magicmap.tag.ui.InformationObjectCellRenderer;
 
 /**
  * <p>
@@ -28,8 +25,7 @@ public class ObjectLinkForm {
     private JComboBox informationUri;
     private JComboBox nodeName;
     private JLabel nodeType = new JLabel();
-    private JTextField myType = new JTextField(10);
-    private JList allTyes;
+
     private JComponent form;
     private FormLayout layout;
     private JButton load = new JButton("Suchen");
@@ -40,18 +36,9 @@ public class ObjectLinkForm {
      * 
      * @param typeModel
      */
-    public ObjectLinkForm(ComboBoxModel typeModel, ComboBoxModel nodeModel, ComboBoxModel uriModel) {
-        this.allTyes = new JList(typeModel);
+    public ObjectLinkForm(ComboBoxModel nodeModel, ComboBoxModel uriModel) {
         informationUri = new JComboBox(uriModel);
         nodeName = new JComboBox(nodeModel);
-        allTyes.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent event) {
-                if (event.getClickCount() == 2 && allTyes.getSelectedValue() != null) {
-                    myType.setText(allTyes.getSelectedValue().toString());
-                }
-            }
-        });
         informationUri.setRenderer(new InformationObjectCellRenderer());
     }
 
@@ -67,13 +54,6 @@ public class ObjectLinkForm {
         return nodeType;
     }
 
-    public JTextField getMyType() {
-        return myType;
-    }
-
-    public JList getAllTyes() {
-        return allTyes;
-    }
 
     public void setLoadAction(Action loadAction) {
         this.load.setAction(loadAction);
@@ -108,15 +88,7 @@ public class ObjectLinkForm {
             b.add(informationUri, cc.xy(3, b.getRowCount()));
             b.add(load, cc.xy(5, b.getRowCount()));
 
-            b.appendRelatedComponentsGapRow();
-            b.appendRow("p");
-            b.add(new JLabel("Ihr Typ"), cc.xy(1, b.getRowCount()));
-            b.add(myType, cc.xy(3, b.getRowCount()));
 
-
-            b.appendRow("fill:p:grow");
-            b.add(new JLabel("Ale Typen"), cc.xy(1, b.getRowCount()));
-            b.add(new JScrollPane(allTyes), cc.xy(3, b.getRowCount()));
             form = b.getPanel();
         }
 
@@ -124,10 +96,4 @@ public class ObjectLinkForm {
 
     }
 
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.getContentPane().add(new ObjectLinkForm(new DefaultComboBoxModel(),new DefaultComboBoxModel(), new DefaultComboBoxModel() ).getForm());
-        f.pack();
-        f.setVisible(true);
-    }
 }

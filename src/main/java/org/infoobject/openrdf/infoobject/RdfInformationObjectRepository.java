@@ -104,6 +104,12 @@ public class RdfInformationObjectRepository extends InformationObjectRepository 
                     return tr.transform(binding);
                 }
             });
+            for (InformationObjectTo to : list) {
+                System.out.println("\n " + to.getUri() + " => ");
+                for (TaggingTo tt : to.getTaggings()) {
+                    System.out.println(tt.getTag() +", ");
+                }
+            }
             return list;
         } catch (RdfException e) {
             throw new IllegalStateException(e);

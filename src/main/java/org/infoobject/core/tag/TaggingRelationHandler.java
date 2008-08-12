@@ -26,6 +26,11 @@ public class TaggingRelationHandler extends InformationObjectListenerAdapter {
 
     private final InformationObjectNodeGraph graph;
     private final InformationObjectNodeModel nodeModel;
+
+    /**
+     *
+     * @param nodeModel used to add.
+     */
     public TaggingRelationHandler(InformationObjectNodeModel nodeModel) {
         this.nodeModel = nodeModel;
         this.graph = nodeModel.getInformationObjectNodeGraph();
@@ -41,7 +46,9 @@ public class TaggingRelationHandler extends InformationObjectListenerAdapter {
         for (Tagging otherTagging : tagging.getTag().getTags()) {
             final InformationObject target = otherTagging.getTagged();
             final InformationObjectNode tagetNode = nodeModel.findInformationNode(target.getUri());
-            createOrChangeTaggingRelation(sourceNode, tagetNode);
+            if (tagetNode != null && sourceNode != null && tagetNode != sourceNode) {
+                createOrChangeTaggingRelation(sourceNode, tagetNode);
+            }
 
         }
     }
@@ -59,6 +66,6 @@ public class TaggingRelationHandler extends InformationObjectListenerAdapter {
 
     @Override
     public void onTaggingRemoved(TaggingEvent tagging) {
-        super.onTaggingRemoved(tagging);    //To change body of overridden methods use File | Settings | File Templates.
+        super.onTaggingRemoved(tagging);
     }
 }

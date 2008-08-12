@@ -64,19 +64,23 @@ public class InformationObjectManager {
      */
     protected void addInformation(Timestamp now, InformationObjectTo to) {
 
-        if (to.getMetadata() != null) {
-            model.add(to.getMetadata());
+        /**
+         * Make shure an information exsists for the following tatggings on obect links.
+         */
+        model.add(to.getMetadata() != null ?to.getMetadata() : new InformationMetadataTo(to.getUri()));
+
+        // Now the positions to prevent taggings to not existents information objects.
+        if (to.getObjectLinkings() != null) {
+            for (ObjectLinkingTo linkingTo : to.getObjectLinkings()) {
+                add(linkingTo);
+            }
         }
         if (to.getTaggings() != null) {
             for (TaggingTo tagging : to.getTaggings()) {
                 add(tagging);
             }
         }
-        if (to.getObjectLinkings() != null) {
-            for (ObjectLinkingTo linkingTo : to.getObjectLinkings()) {
-                add(linkingTo);
-            }
-        }
+
         loadTimes.put(model.getInformationObject(to.getUri()), now);
     }
 

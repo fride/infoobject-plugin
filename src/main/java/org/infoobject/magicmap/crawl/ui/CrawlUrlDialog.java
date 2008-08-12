@@ -51,7 +51,7 @@ public class CrawlUrlDialog extends JDialog {
     }
 
     private void init() {
-        uriField = new JTextField(10);
+        uriField = new JTextField(20);
         setTitle("Url Laden");
         FormLayout l = new FormLayout("p,3dlu,p:grow,3dlu,p","p,12dlu,p");
         CellConstraints cc = new CellConstraints();

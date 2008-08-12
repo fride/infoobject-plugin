@@ -251,6 +251,8 @@ public class InformationObjectNodeGraphImpl implements InformationObjectNodeGrap
             relationEdge = new InformationRelationEdge(n1, n2, this);
             relationEdge.addRelation(factory.create(relationEdge));
             edge.addUserDatum("RELATION", relationEdge, UserData.SHARED);
+            this.relations.put(relationEdge, edge);
+            graph.addEdge(edge);
         } else {
             relationEdge.addRelation(factory.create(relationEdge));
         }

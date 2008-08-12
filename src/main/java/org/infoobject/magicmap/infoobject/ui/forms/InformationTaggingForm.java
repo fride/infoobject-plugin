@@ -10,12 +10,9 @@ import org.infoobject.core.agent.Agent;
 import org.infoobject.core.infoobject.model.InformationObject;
 import org.infoobject.core.infoobject.model.Tag;
 import org.infoobject.core.infoobject.model.TaggingPost;
-import org.infoobject.magicmap.tag.ui.TagginPostCellRenderer;
+import org.infoobject.magicmap.tag.ui.TaggingCellrenderer;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class InformationTaggingForm extends AbstractModel {
     private JTextArea tags = new JTextArea(3,3);
     private JList otherTags = new JList();
     private JComponent form;
-    private TagginPostCellRenderer cellRenderer;
+    private TaggingCellrenderer cellRenderer;
 
     public InformationTaggingForm() {
 
@@ -44,7 +41,7 @@ public class InformationTaggingForm extends AbstractModel {
                 checkTags(s);
             }
         };
-        cellRenderer = new TagginPostCellRenderer();
+        cellRenderer = new TaggingCellrenderer();
         this.otherTags.setCellRenderer(cellRenderer);
     }
 

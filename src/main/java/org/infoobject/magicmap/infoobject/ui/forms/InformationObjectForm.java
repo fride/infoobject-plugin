@@ -1,6 +1,7 @@
 package org.infoobject.magicmap.infoobject.ui.forms;
 
 import net.sf.magicmap.client.utils.AbstractModel;
+import net.sf.magicmap.client.utils.DocumentAdapter;
 
 import javax.swing.*;
 
@@ -26,70 +27,71 @@ import org.infoobject.core.agent.Agent;
  *         Time: 22:47:08
  */
 public class InformationObjectForm extends AbstractModel {
-    private InformationMetadataForm informationMetadataForm;
-    private InformationTaggingForm taggingForm;
-    private ObjectLinkForm objectLinkForm;
 
+
+    private JTextField uriField = new JTextField(10);
+    private JTextField mimeField = new JTextField();
+    private JList facets = new JList();
+    private String uri;
+    private String mime;
 
     private JComponent form;
-    /**
-     *
-     * @param informationMetadataForm
-     * @param taggingForm
-     * @param objectLinkForm
-     */
-    public InformationObjectForm(InformationMetadataForm informationMetadataForm, InformationTaggingForm taggingForm, ObjectLinkForm objectLinkForm) {
-        this.informationMetadataForm = informationMetadataForm;
-        this.taggingForm = taggingForm;
-        this.objectLinkForm = objectLinkForm;
+
+    public InformationObjectForm() {
+        new DocumentAdapter(uriField){
+            public void handleChange(String s) {
+                setUri(s);
+            }
+        };
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        if (this.uri == null || !this.uri.equals(uri)) {
+            String old = this.uri;
+            this.uri = uri;
+            firePropertyChange("uri", old,uri);
+        }
+    }
+
+    public String getMime() {
+        return mime;
+    }
+
+    public void setMime(String mime) {
+        if (this.mime == null || !this.mime.equals(uri)) {
+            String old = this.mime;
+            this.mime = mime;
+            firePropertyChange("mime", old,mime);
+        }
     }
 
     public JComponent getForm() {
         if (form == null) {
-            FormLayout l = new FormLayout("p:grow");
+            FormLayout l = new FormLayout("right:p");
             CellConstraints cc = new CellConstraints();
             PanelBuilder b = new DefaultFormBuilder(l);
+            b.appendRelatedComponentsGapColumn();
+            b.appendColumn("p:grow");
 
             b.appendRow("p");
-            b.add(informationMetadataForm.getForm(), cc.xy(1,1));
+            b.add(new JLabel("Titel der Information"), cc.xy(1, b.getRowCount()));
+            b.add(uriField, cc.xy(3, b.getRowCount()));
 
-            b.appendUnrelatedComponentsGapRow();
+            b.appendRelatedComponentsGapRow();
             b.appendRow("p");
-            JTabbedPane tabs = new JTabbedPane();
-            tabs.addTab("Tags", taggingForm.getForm());
-            tabs.addTab("Vernfüpfung", objectLinkForm.getForm());
+            b.add(new JLabel("MIME"), cc.xy(1, b.getRowCount()));
+            b.add(mimeField, cc.xy(3, b.getRowCount()));
 
-            b.add(tabs, cc.xy(1,3));
 
             form = b.getPanel();
         }
         return form;
     }
 
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
 
-        TaggingPost[] posts = new TaggingPost[] {
-            new TaggingPost(new InformationObject("..."), Agent.ANONYMOUS, Tag.create("Zeitung"), true),
-            new TaggingPost(new InformationObject("..."), Agent.ANONYMOUS, Tag.create("Anspruch"), false)
-        };
-
-        DefaultComboBoxModel m = new DefaultComboBoxModel(posts);
-        InformationTaggingForm taggingForm = new InformationTaggingForm();
-        taggingForm.setTagModel(m);
-
-
-
-        InformationMetadataForm metadataForm = new InformationMetadataForm();
-        metadataForm.setTitleEditable(true);
-        metadataForm.setMimeEditable(false);
-        
-        ObjectLinkForm objectLinkForm = new ObjectLinkForm(m, m, m);
-
-        InformationObjectForm form = new InformationObjectForm(metadataForm, taggingForm, objectLinkForm);
-        f.getContentPane().add(form.getForm());
-        f.pack();
-        f.setVisible(true);
-    }
 
 }

@@ -31,7 +31,7 @@ public class ObjectName {
      * @return returns getPositionServer() + "/nodes/" + getName()
      */
     public String toString() {
-		return positionServer + "/nodes/" + name;
+		return positionServer + "/" + name;
 	}
 	/**
 	 *

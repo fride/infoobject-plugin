@@ -1,9 +1,6 @@
 package org.infoobject.core.infoobject.model;
 
-import net.sf.magicmap.client.model.node.INode;
 import net.sf.magicmap.client.model.node.Node;
-import net.sf.magicmap.client.model.node.INodeModel;
-import org.infoobject.core.infoobject.model.InformationNodeModelImpl;
 import org.infoobject.core.util.Digest;
 
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ public class InformationObjectNode extends Node {
     public static final int NODE_TYPE =-6762;
     private final InformationObject information;
 
-    public InformationObjectNode(InformationNodeModelImpl iNodeModel, InformationObject information) {
+    public InformationObjectNode(InformationObjectNodeModel iNodeModel, InformationObject information) {
         super(iNodeModel);
         this.information = information;
         setName(createInformationObjectId(information.getUri()));
@@ -62,8 +59,8 @@ public class InformationObjectNode extends Node {
      * 
      * @return
      */
-    public InformationNodeModelImpl getModel() {
-        return (InformationNodeModelImpl) super.getModel();
+    public InformationObjectNodeModel getModel() {
+        return (InformationObjectNodeModel) super.getModel();
     }
 
     public int getType() {

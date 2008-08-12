@@ -140,6 +140,7 @@ public class InformationNodeLayoutManager {
 
     }
     public void addRelation(RelationEdge edge) {
+        System.out.println(getClass().getName() + " edge = " + edge);
         thread.suspend();
         try {
             edge.accept(relationAdder);

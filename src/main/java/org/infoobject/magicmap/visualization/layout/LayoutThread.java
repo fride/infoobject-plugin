@@ -25,8 +25,6 @@ final class LayoutThread {
             while (!terminated) {
                 try {
                     if (!suspended) {
-                        int x = 129;
-                        x = x +2;
                         springLayout.advancePositions();
                     }
                     Thread.sleep(30);
@@ -47,12 +45,16 @@ final class LayoutThread {
 
     public void suspend() {
         this.suspended = true;
-        layoutThread.interrupt();
+        if (layoutThread != null) {
+            layoutThread.interrupt();
+        }
     }
 
     public void unsupend() {
         this.suspended = false;
-        layoutThread.interrupt();
+        if (layoutThread != null) {
+            layoutThread.interrupt();
+        }
     }
 
     public void start() {

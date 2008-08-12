@@ -83,7 +83,28 @@ public class InformationObject {
         return link.add(agent, type);
     }
 
+    public ArrayList<ObjectName> getObjectNames() {
+        return new ArrayList<ObjectName>(objectLinks.keySet());
+    }
     public ArrayList<Tag> getTags() {
         return new ArrayList<Tag>(taggings.keySet());
+    }
+    public List<Tagging> getTaggings() {
+        return new ArrayList<Tagging>(taggings.values());
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InformationObject)) return false;
+
+        InformationObject that = (InformationObject) o;
+
+        if (uri != null ? !uri.equals(that.uri) : that.uri != null) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        return (uri != null ? uri.hashCode() : 0);
     }
 }

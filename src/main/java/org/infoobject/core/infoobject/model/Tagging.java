@@ -49,6 +49,10 @@ public class Tagging implements Comparable<Tagging>{
         return post;
     }
 
+    public boolean hasAgen(Agent agent) {
+        return posts.keySet().contains(agent);
+    }
+    
     public int compareTo(Tagging tagging) {
         if (tagging == null) return 1;
         int i = getTagged().getUri().compareTo(tagging.getTagged().getUri());

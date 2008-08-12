@@ -1,7 +1,6 @@
 package org.infoobject.core.infoobject;
 
-import org.infoobject.core.infoobject.model.InformationObjectNodeGraphImpl;
-import org.infoobject.core.infoobject.model.InformationNodeModelImpl;
+import org.infoobject.core.infoobject.model.InformationObjectNodeModelImpl;
 import org.infoobject.core.infoobject.model.*;
 import org.infoobject.core.infoobject.event.InformationObjectListenerAdapter;
 import org.infoobject.core.infoobject.event.ObjectLinkingEvent;
@@ -23,8 +22,8 @@ import net.sf.magicmap.client.interfaces.NodeModelListener;
  */
 public class InformationNodeManager {
 
-    private final InformationNodeModelImpl nodeModel;
-    private final InformationObjectNodeGraphImpl informationNodeGraph;
+    private final InformationObjectNodeModelImpl objectNodeModel;
+    private final InformationObjectNodeGraph informationNodeGraph;
     private final InformationObjectManager informationObjectManager;
 
     static class ObjectRelationFactory implements ObjectRelation.Factory{
@@ -45,10 +44,10 @@ public class InformationNodeManager {
      */
     public InformationNodeManager(INodeModel nodeModel, InformationObjectManager informationObjectManager) {
         this.informationObjectManager = informationObjectManager;
-        this.nodeModel = new InformationNodeModelImpl(nodeModel);
-        this.informationNodeGraph = new InformationObjectNodeGraphImpl();
-        this.nodeModel.addNodeGraph(informationNodeGraph);
-        this.nodeModel.addNodeModelListener(new NodeModelListener() {
+        this.objectNodeModel = new InformationObjectNodeModelImpl(nodeModel);
+        this.informationNodeGraph = objectNodeModel.getInformationObjectNodeGraph();
+        this.objectNodeModel.addNodeGraph(informationNodeGraph);
+        this.objectNodeModel.addNodeModelListener(new NodeModelListener() {
             public void nodeAddedEvent(Node node) {
                 if (node.isPhysical()){
                     informationNodeGraph.insertNode(node);
@@ -56,7 +55,7 @@ public class InformationNodeManager {
             }
 
             public void nodeUpdatedEvent(Node node, int i, Object o) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                
             }
 
             public void nodeRemovedEvent(Node node) {
@@ -81,7 +80,7 @@ public class InformationNodeManager {
     }
 
     public InformationObjectNodeModel getNodeModel() {
-        return nodeModel;
+        return objectNodeModel;
     }
 
     public InformationObjectNodeGraph getInformationNodeGraph() {
@@ -105,15 +104,20 @@ public class InformationNodeManager {
             informationObjectManager.load(ObjectName.positionName(node.getName(), node.getModel().getServerID()));
         }
     }
+
+    /**
+     * 
+     * @param linking
+     */
     private void addObjectRelation(ObjectLinkPost linking) {
-        Node node = nodeModel.findNode(linking.getObjectLink().getObjectName().getName());
+        Node node = objectNodeModel.findNode(linking.getObjectLink().getObjectName().getName());
         System.out.println("linking.getObjectLink().getObjectName().getName() = " + linking.getObjectLink().getObjectName().getName());
         System.out.println(" node ? = " + node);
         InformationObject informationObject = linking.getObjectLink().getInformationObject();
-        InformationObjectNode informationNode = nodeModel.findInformationNode(informationObject.getUri());
+        InformationObjectNode informationNode = objectNodeModel.findInformationNode(informationObject.getUri());
         if (informationNode == null){
-            informationNode = new InformationObjectNode(nodeModel, informationObject);
-            nodeModel.addNode(informationNode);
+            informationNode = new InformationObjectNode(objectNodeModel, informationObject);
+            objectNodeModel.addNode(informationNode);
         }
         if (node != null) {
             ObjectRelationEdge edge = informationNodeGraph.getObjectEdge(informationNode, node);

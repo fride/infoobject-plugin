@@ -1,13 +1,14 @@
 package org.infoobject.magicmap.plugin;
 
-import net.sf.magicmap.client.model.outline.OutlineModel;
-import net.sf.magicmap.client.model.node.INodeSelectionModel;
-import net.sf.magicmap.client.visualization.NodeCanvas;
+import net.sf.magicmap.client.gui.MainFrame;
+import net.sf.magicmap.client.gui.MainGUI;
+import net.sf.magicmap.client.gui.views.ConsoleView;
 import net.sf.magicmap.client.gui.views.MapView;
 import net.sf.magicmap.client.gui.views.OutlineView;
-import net.sf.magicmap.client.gui.views.ConsoleView;
-import net.sf.magicmap.client.gui.MainGUI;
-import net.sf.magicmap.client.gui.MainFrame;
+import net.sf.magicmap.client.model.node.INodeSelectionModel;
+import net.sf.magicmap.client.model.outline.OutlineModel;
+import net.sf.magicmap.client.visualization.NodeCanvas;
+import org.infoobject.magicmap.infoobject.ui.util.InformationObjectNodeListFactory;
 
 import javax.swing.*;
 
@@ -28,7 +29,6 @@ public class GuiComponentFactory {
     private  ConsoleView consoleView;
     private  MainFrame mainFrame;
     private  JMenu infoMenu;
-
 
     public GuiComponentFactory() {
         

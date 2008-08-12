@@ -43,6 +43,7 @@ public class VisualizationManager {
     public VisualizationManager(InformationObjectNodeGraph graph, NodeCanvas nodeCanvas) {
         this.graph = graph;
         this.nodeCanvas = nodeCanvas;
+        
         graph.addNodeGraphListener(new NodeGraphListener() {
             public void edgeAdded(MagicGraphEvent event) {
                 IMagicEdge edge = event.getEdge();

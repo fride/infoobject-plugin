@@ -5,14 +5,13 @@ import net.sf.magicmap.client.plugin.IPluginDescriptor;
 import net.sf.magicmap.client.utils.Settings;
 import net.sf.magicmap.client.controller.IController;
 import net.sf.magicmap.client.gui.views.ConsoleView;
-import net.sf.magicmap.client.model.node.Node;
 import org.infoobject.magicmap.visualization.VisualizationManager;
 import org.infoobject.magicmap.infoobject.ui.model.InformationObjectPresenter;
+import org.infoobject.magicmap.node.InformationNodeLoader;
 import org.infoobject.core.infoobject.InformationNodeManager;
 import org.infoobject.core.infoobject.InformationObjectManager;
 import org.infoobject.core.infoobject.model.InformationObjectModel;
 import org.infoobject.core.infoobject.model.InformationObjectNodeModel;
-import org.infoobject.core.infoobject.model.ObjectName;
 import org.infoobject.core.agent.AgentManager;
 import org.infoobject.core.crawl.CrawlerManager;
 import org.infoobject.core.crawl.xml.XsltMetadataExtractor;
@@ -27,10 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.ArrayList;
-
-import foxtrot.Worker;
-import foxtrot.Task;
 
 /**
  * <p>
@@ -59,6 +54,8 @@ public class InformationObjectPlugin extends AbstractPlugin {
     private InformationObjectPresenter informationPresenter;
 
     private TaggingRelationHandler taggingRelationHandler;
+    private GuiComponentFactory factory;
+
     public InformationObjectPlugin(IPluginDescriptor iPluginDescriptor) {
         super(iPluginDescriptor);
     }
@@ -89,25 +86,12 @@ public class InformationObjectPlugin extends AbstractPlugin {
         super.loadMap();
         final InformationObjectNodeModel nodeModel = informationNodeManager.getNodeModel();
         visualizationManager.setMap(nodeModel.getCurrentMap());
-        try {
-            final ArrayList<Node> nodes = new ArrayList<Node>(nodeModel.getNodes());
-            for (Node node:nodes) {
-                if (node.isPhysical()){
-                    consoleView.append("Loading " + node.getDisplayName());
-                    informationObjectManager.load(new ObjectName(node.getName(), nodeModel.getServerID()));
-                }
-            }
-
-        }catch (Exception ex){
-            consoleView.append(ex.getMessage());
-        }
-
     }
 
     @Override
     public void setup(Settings settings) {
         super.setup(settings);
-        GuiComponentFactory factory = new GuiComponentFactory();
+        factory = new GuiComponentFactory();
         File dataDir = new File(System.getProperty("user.home") + "/.mmnfo/rdf");
         factory.getConsoleView().append("Infoobjects settup with dir " + dataDir.getAbsolutePath());
         SailRepository sailRepository = new SailRepository(new MemoryStore(dataDir));
@@ -121,15 +105,19 @@ public class InformationObjectPlugin extends AbstractPlugin {
             informationObjectManager = new InformationObjectManager(new InformationObjectModel(), repos, agentManager);
             informationNodeManager = new InformationNodeManager(controller.getNodeModel(), informationObjectManager);
             visualizationManager = new VisualizationManager(informationNodeManager.getInformationNodeGraph(), factory.getNodeCanvas());
-            informationPresenter = new InformationObjectPresenter(informationNodeManager, informationObjectManager, crawlerManager);
+            informationPresenter = new InformationObjectPresenter(informationNodeManager, informationObjectManager, crawlerManager,factory);
             setupActions(factory);
-            taggingRelationHandler = new TaggingRelationHandler(informationNodeManager.getNodeModel());
 
+            taggingRelationHandler = new TaggingRelationHandler(informationNodeManager.getNodeModel());
+            informationObjectManager.getModel().addInformationObjectListener(taggingRelationHandler);
+            
+            registerNodeModelListeners();
         } catch (Exception e) {
             startExceptions.add(e);
+            e.printStackTrace();
         } finally {
             if (startExceptions.size() > 0) {
-                factory.getConsoleView().append("Errors starting InformationObjectPlugin!");
+                factory.getConsoleView().append(" " + startExceptions.size() + " Errors starting InformationObjectPlugin!");
                 for (Exception ex : startExceptions) {
                     factory.getConsoleView().append(ex.getMessage());
                 }
@@ -142,9 +130,18 @@ public class InformationObjectPlugin extends AbstractPlugin {
 
     }
 
+    private void registerNodeModelListeners() {
+        informationNodeManager.getNodeModel().addNodeModelListener(new InformationNodeLoader(informationObjectManager,factory));
+    }
+
     private void setupActions(GuiComponentFactory factory) {
-        factory.getMapView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getShowCreateDialogAction()));
-        factory.getOutlineView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getShowCreateDialogAction()));
+        //factory.getMapView().getMenuContainer().addSeperator();
+        factory.getMapView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getShowCreateAnEditDialogAction()));
+        factory.getMapView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getDeleteInformationObjectAction()));
+
+        //factory.getMapView().getMenuContainer().addSeperator();
+        factory.getOutlineView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getShowCreateAnEditDialogAction()));
+        factory.getOutlineView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getDeleteInformationObjectAction()));
     }
 
     private void setupParsers(ConsoleView consoleView)  {
