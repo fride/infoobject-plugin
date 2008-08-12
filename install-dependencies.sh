@@ -66,13 +66,13 @@ mvn install:install-file\
 	-DgeneratePom=true\
 	-Dpackaging=jar
 
-mvn install:install-file\
-	-Dfile=lib/db4o-6.4.48.10991-java5.jar\
-	-DgroupId=com.db4o\
-	-DartifactId=db4o\
-	-Dversion=6.4.48.10991\
-	-DgeneratePom=true\
-	-Dpackaging=jar
+#mvn install:install-file\
+#	-Dfile=lib/db4o-6.4.48.10991-java5.jar\
+#	-DgroupId=com.db4o\
+#	-DartifactId=db4o\
+#	-Dversion=6.4.48.10991\
+#	-DgeneratePom=true\
+#	-Dpackaging=jar
 
 #mvn  assembly:assembly -Dmaven.test.skip=true
 #cp target/infoobject-0.1-SNAPSHOT-magicmap-plugin.jar ../magicmapclient/plugins/infoobject.jar
