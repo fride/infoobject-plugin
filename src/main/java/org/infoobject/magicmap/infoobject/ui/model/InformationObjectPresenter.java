@@ -88,7 +88,6 @@ public class InformationObjectPresenter extends AbstractInformationObjectPresent
                         objectLinkUI.enableInformationSelection(true);
                         objectLinkUI.setSelectedNode(getSelectedNode());
                         objectLinkUI.setSelectedInformationObject(null);
-
                     }
                     dlg.pack();
                     dlg.setVisible(true);
