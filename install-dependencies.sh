@@ -1,5 +1,5 @@
 #!/bin/sh
-#if [ -f '~/.m2/repository/net/sf/magicmap/magicmapclient/0.9.4/magicmapclient-0.9.4.jar']; then
+
 mvn install:install-file\
 	-Dfile=../magicmapclient/magicmap.jar\
 	-DgroupId=net.sf.magicmap\
@@ -7,7 +7,6 @@ mvn install:install-file\
 	-Dversion=0.9.4\
 	-DgeneratePom=true\
 	-Dpackaging=jar
-#fi
 
 mvn install:install-file\
 	-Dfile=../magicmapclient/lib/piccolo.jar\
@@ -63,14 +62,6 @@ mvn install:install-file\
 	-DgroupId=org.igniterealtime\
 	-DartifactId=smackx-debug\
 	-Dversion=3.0.4\
-	-DgeneratePom=true\
-	-Dpackaging=jar
-
-mvn install:install-file\
-	-Dfile=lib/db4o-6.4.48.10991-java5.jar\
-	-DgroupId=com.db4o\
-	-DartifactId=db4o\
-	-Dversion=6.4.48.10991\
 	-DgeneratePom=true\
 	-Dpackaging=jar
 

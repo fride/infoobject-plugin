@@ -1,7 +1,7 @@
 package org.infoobject.openrdf.infoobject.dao;
 
 import org.infoobject.core.infoobject.dao.ObjectLinkDao;
-import org.infoobject.core.infoobject.model.ObjectName;
+import org.infoobject.core.infoobject.domain.ObjectName;
 import org.infoobject.core.infoobject.to.ObjectLinkingTo;
 import org.infoobject.core.rdf.vocabulary.DC;
 import org.infoobject.core.rdf.vocabulary.InformationObjectVoc;

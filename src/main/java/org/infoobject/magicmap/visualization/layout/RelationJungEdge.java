@@ -1,9 +1,9 @@
 package org.infoobject.magicmap.visualization.layout;
 
 import edu.uci.ics.jung.graph.impl.UndirectedSparseEdge;
-import org.infoobject.core.infoobject.model.InformationRelationEdge;
-import org.infoobject.core.infoobject.model.RelationEdge;
-import org.infoobject.core.infoobject.model.ObjectRelationEdge;
+import org.infoobject.core.relation.domain.InformationRelationEdge;
+import org.infoobject.core.relation.domain.RelationEdge;
+import org.infoobject.core.relation.domain.PositionRelationEdge;
 
 import java.lang.ref.WeakReference;
 
@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference;
 public class RelationJungEdge extends UndirectedSparseEdge {
 
     final WeakReference<RelationEdge> edge;
-    public RelationJungEdge(PhysicalVertex vertex, InformationVertex vertex1, ObjectRelationEdge edge) {
+    public RelationJungEdge(PhysicalVertex vertex, InformationVertex vertex1, PositionRelationEdge edge) {
         super(vertex, vertex1);
         this.edge = new WeakReference<RelationEdge>(edge);
     }

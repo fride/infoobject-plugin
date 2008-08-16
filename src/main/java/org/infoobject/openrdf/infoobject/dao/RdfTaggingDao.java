@@ -11,7 +11,7 @@ import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.n3.N3Writer;
 import org.openrdf.sail.memory.MemoryStore;
 import org.infoobject.core.infoobject.to.TaggingTo;
-import org.infoobject.core.infoobject.model.Tag;
+import org.infoobject.core.infoobject.domain.Tag;
 import org.infoobject.core.infoobject.dao.TaggingDao;
 import org.infoobject.core.util.Digest;
 import org.infoobject.openrdf.util.ConnectionCallback;

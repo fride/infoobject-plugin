@@ -4,7 +4,7 @@ import org.openrdf.query.BindingSet;
 import org.apache.commons.collections15.Transformer;
 
 
-import org.infoobject.core.infoobject.model.ObjectName;
+import org.infoobject.core.infoobject.domain.ObjectName;
 import org.infoobject.core.infoobject.to.ObjectLinkingTo;
 
 /**

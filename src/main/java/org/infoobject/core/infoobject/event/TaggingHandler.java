@@ -1,6 +1,6 @@
 package org.infoobject.core.infoobject.event;
 
-import org.infoobject.core.infoobject.model.TaggingPost;
+import org.infoobject.core.infoobject.domain.TaggingPost;
 
 /**
  * <p>

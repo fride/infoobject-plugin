@@ -4,7 +4,11 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.Vertex;
 import edu.uci.ics.jung.graph.Edge;
 import net.sf.magicmap.client.model.node.Node;
-import org.infoobject.core.infoobject.model.*;
+import org.infoobject.magicmap.node.model.InformationObjectNode;
+import org.infoobject.core.relation.domain.InformationRelationEdge;
+import org.infoobject.core.relation.domain.PositionRelationEdge;
+import org.infoobject.core.relation.domain.RelationEdgeVisitor;
+import org.infoobject.core.relation.domain.RelationEdge;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -31,7 +35,7 @@ public class InformationNodeLayoutManager {
     private Map<RelationEdge, Edge> edgeMap  = new HashMap<RelationEdge, Edge>();
     
     private RelationEdgeVisitor relationAdder = new RelationEdgeVisitor() {
-        public void visit(ObjectRelationEdge relation) {
+        public void visit(PositionRelationEdge relation) {
             thread.suspend();
             try {
                 final Node sourceNode = relation.getSourceNode();

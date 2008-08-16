@@ -1,6 +1,6 @@
 package org.infoobject.core.infoobject.dao;
 
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
+import org.infoobject.core.infoobject.to.MetadataTo;
 
 import java.util.List;
 
@@ -18,19 +18,19 @@ import java.util.List;
  */
 public interface InformationMetadataDao {
 
-    void save (InformationMetadataTo data);
+    void save (MetadataTo data);
     /**
      *
      * @param uri
      * @return
      */
-    InformationMetadataTo load(String uri);
+    MetadataTo load(String uri);
 
     /**
      *
      * @return
      */
-    List<InformationMetadataTo> findAll();
+    List<MetadataTo> findAll();
 
     void commit();
 }

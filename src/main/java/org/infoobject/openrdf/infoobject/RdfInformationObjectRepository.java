@@ -1,14 +1,14 @@
 package org.infoobject.openrdf.infoobject;
 
-import org.infoobject.core.infoobject.*;
-import org.infoobject.core.infoobject.model.InformationObjectModel;
-import org.infoobject.core.infoobject.model.InformationObjectRepository;
-import org.infoobject.core.infoobject.model.ObjectName;
+import org.infoobject.core.infoobject.application.InformationObjectManager;
+import org.infoobject.core.infoobject.domain.support.DefaultInformationObjectModel;
+import org.infoobject.core.infoobject.dao.AbstractInformationObjectRepository;
+import org.infoobject.core.infoobject.domain.ObjectName;
 import org.infoobject.core.infoobject.to.InformationObjectTo;
 import org.infoobject.core.infoobject.to.TaggingTo;
 import org.infoobject.core.infoobject.to.ObjectLinkingTo;
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
-import org.infoobject.core.agent.AgentManager;
+import org.infoobject.core.infoobject.to.MetadataTo;
+import org.infoobject.core.agent.application.AgentManager;
 import org.infoobject.openrdf.infoobject.dao.*;
 import org.infoobject.openrdf.util.RdfException;
 import org.infoobject.openrdf.util.OpenRdfTemplate;
@@ -40,7 +40,7 @@ import java.util.Collections;
  *         Date: 09.08.2008
  *         Time: 00:55:30
  */
-public class RdfInformationObjectRepository extends InformationObjectRepository {
+public class RdfInformationObjectRepository extends AbstractInformationObjectRepository {
     private final Repository repos;
     private final OpenRdfTemplate rdfTemplate;
     static StringTemplateGroup templates = new StringTemplateGroup("sparql");
@@ -129,7 +129,7 @@ public class RdfInformationObjectRepository extends InformationObjectRepository 
             rdfTemplate.queryList(objectTemplate.toString(), new BindingSetMapper<InformationObjectTo>() {
                 public InformationObjectTo map(BindingSet bindingSet, int row) {
                     if (row == 1){
-                        info.setMetadata(new InformationMetadataTo(uri));
+                        info.setMetadata(new MetadataTo(uri));
                         if (bindingSet.hasBinding("info_title")){
                             info.getMetadata().setTitle(bindingSet.getValue("info_title").stringValue());
                         }
@@ -170,9 +170,9 @@ public class RdfInformationObjectRepository extends InformationObjectRepository 
         r.initialize();
         RdfInformationObjectRepository repos = new RdfInformationObjectRepository(r);
 
-        InformationObjectManager manager = new InformationObjectManager(new InformationObjectModel(), repos, new AgentManager());
+        InformationObjectManager manager = new InformationObjectManager(new DefaultInformationObjectModel(), repos, new AgentManager());
 
-        InformationMetadataTo meta = new InformationMetadataTo("http://www.heise.de");
+        MetadataTo meta = new MetadataTo("http://www.heise.de");
         meta.setTitle("Gomen und so");
         meta.setMimeType("text/html");
         meta.setEncoding("");
@@ -218,7 +218,7 @@ public class RdfInformationObjectRepository extends InformationObjectRepository 
 
 
 
-        System.out.println("link = " + manager.getModel().getInformationObject("http://friderici.net"));
+        //System.out.println("link = " + manager.getModel().getInformationObject("http://friderici.net"));
     }
 
 

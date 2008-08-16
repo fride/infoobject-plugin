@@ -1,6 +1,6 @@
 package org.infoobject.core.infoobject.event;
 
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
+import org.infoobject.core.infoobject.to.MetadataTo;
 
 /**
  * <p>
@@ -16,7 +16,7 @@ import org.infoobject.core.infoobject.to.InformationMetadataTo;
  */
 public interface InformationMetadataHandler {
 
-    void handleInformationMetadatAdded(InformationMetadataTo data);
-    void handleInformationMetadatChanged(InformationMetadataTo data);
-    void handleInformationMetadatRemoved(InformationMetadataTo data);
+    void handleInformationMetadatAdded(MetadataTo data);
+    void handleInformationMetadatChanged(MetadataTo data);
+    void handleInformationMetadatRemoved(MetadataTo data);
 }

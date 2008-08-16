@@ -1,31 +1,22 @@
 package org.infoobject.magicmap.plugin;
 
+import net.sf.magicmap.client.controller.IController;
 import net.sf.magicmap.client.plugin.AbstractPlugin;
 import net.sf.magicmap.client.plugin.IPluginDescriptor;
 import net.sf.magicmap.client.utils.Settings;
-import net.sf.magicmap.client.controller.IController;
-import net.sf.magicmap.client.gui.views.ConsoleView;
+import org.infoobject.core.components.DefaultModelFactory;
+import org.infoobject.core.components.ModelFactory;
+import org.infoobject.core.infoobject.ui.model.InformationObjectPresenter;
+import org.infoobject.core.position.application.PositionLinkRelationManager;
+import org.infoobject.core.tag.application.TaggingRelationManager;
+import org.infoobject.magicmap.components.GuiComponentFactory;
+import org.infoobject.magicmap.components.PluginManagerFactory;
+import org.infoobject.magicmap.node.application.InformationNodeLoader;
 import org.infoobject.magicmap.visualization.VisualizationManager;
-import org.infoobject.magicmap.infoobject.ui.model.InformationObjectPresenter;
-import org.infoobject.magicmap.node.InformationNodeLoader;
-import org.infoobject.core.infoobject.InformationNodeManager;
-import org.infoobject.core.infoobject.InformationObjectManager;
-import org.infoobject.core.infoobject.tag.TaggingRelationHandler;
-import org.infoobject.core.infoobject.model.InformationObjectModel;
-import org.infoobject.core.infoobject.model.InformationObjectNodeModel;
-import org.infoobject.core.agent.AgentManager;
-import org.infoobject.core.crawl.CrawlerManager;
-import org.infoobject.core.crawl.xml.XsltMetadataExtractor;
-import org.infoobject.openrdf.infoobject.RdfInformationObjectRepository;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.memory.MemoryStore;
 
 import javax.swing.*;
-import javax.xml.transform.TransformerConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <p>
@@ -42,19 +33,16 @@ import java.util.LinkedList;
 public class InformationObjectPlugin extends AbstractPlugin {
 
     private VisualizationManager visualizationManager;
-    private InformationNodeManager informationNodeManager;
-    private InformationObjectManager informationObjectManager;
     private IController controller;
     private List<Exception> startExceptions = new LinkedList<Exception>();
-    private RdfInformationObjectRepository repos;
-    private AgentManager agentManager;
-    private CrawlerManager crawlerManager;
-    private XsltMetadataExtractor xslExtractor;
-    private ConsoleView consoleView;
     private InformationObjectPresenter informationPresenter;
 
-    private TaggingRelationHandler taggingRelationHandler;
+    private TaggingRelationManager taggingRelationManager;
     private GuiComponentFactory factory;
+
+    private PositionLinkRelationManager positionLinkRelationManager;
+    private ModelFactory modelFactory;
+    private PluginManagerFactory managerFactory;
 
     public InformationObjectPlugin(IPluginDescriptor iPluginDescriptor) {
         super(iPluginDescriptor);
@@ -64,6 +52,7 @@ public class InformationObjectPlugin extends AbstractPlugin {
     public void setController(IController iController) {
         super.setController(iController);
         controller = iController;
+        
     }
 
     @Override
@@ -84,33 +73,23 @@ public class InformationObjectPlugin extends AbstractPlugin {
     @Override
     public void loadMap() {
         super.loadMap();
-        final InformationObjectNodeModel nodeModel = informationNodeManager.getNodeModel();
-        visualizationManager.setMap(nodeModel.getCurrentMap());
+        managerFactory.getVisualizationManager().setMap(modelFactory.getInformationObjectNodeModel().getCurrentMap());
     }
 
     @Override
     public void setup(Settings settings) {
         super.setup(settings);
-        factory = new GuiComponentFactory();
-        File dataDir = new File(System.getProperty("user.home") + "/.mmnfo/rdf");
-        factory.getConsoleView().append("Infoobjects settup with dir " + dataDir.getAbsolutePath());
-        SailRepository sailRepository = new SailRepository(new MemoryStore(dataDir));
-        consoleView = factory.getConsoleView();
+        factory = new GuiComponentFactory(modelFactory, managerFactory);
+        modelFactory = new DefaultModelFactory(controller);
+        managerFactory = new PluginManagerFactory(modelFactory, factory.getConsoleView(), factory.getNodeCanvas());
         try {
-            sailRepository.initialize();
-            repos = new RdfInformationObjectRepository(sailRepository);
-            agentManager = new AgentManager();
-            setupParsers(factory.getConsoleView());
-            crawlerManager = new CrawlerManager(xslExtractor);
-            informationObjectManager = new InformationObjectManager(new InformationObjectModel(), repos, agentManager);
-            informationNodeManager = new InformationNodeManager(controller.getNodeModel(), informationObjectManager);
-            visualizationManager = new VisualizationManager(informationNodeManager.getInformationNodeGraph(), factory.getNodeCanvas());
-            informationPresenter = new InformationObjectPresenter(informationNodeManager, informationObjectManager, crawlerManager,factory);
+            informationPresenter = factory.getInformationObjectPresenter();
+            factory.start();
             setupActions(factory);
 
-            taggingRelationHandler = new TaggingRelationHandler(informationNodeManager.getNodeModel());
-            informationObjectManager.getModel().addInformationObjectListener(taggingRelationHandler);
-            
+
+
+            positionLinkRelationManager = new PositionLinkRelationManager(modelFactory.getInformationObjectNodeModel(), modelFactory.getInformationObjectNodeGraph(), modelFactory.getInformationObjectModel());
             registerNodeModelListeners();
         } catch (Exception e) {
             startExceptions.add(e);
@@ -122,8 +101,7 @@ public class InformationObjectPlugin extends AbstractPlugin {
                     factory.getConsoleView().append(ex.getMessage());
                 }
             } else {
-
-                consoleView.append("Infoobjects loaded");
+                factory.getConsoleView().append("Infoobjects loaded");
             }
         }
 
@@ -131,7 +109,9 @@ public class InformationObjectPlugin extends AbstractPlugin {
     }
 
     private void registerNodeModelListeners() {
-        informationNodeManager.getNodeModel().addNodeModelListener(new InformationNodeLoader(informationObjectManager,factory));
+        modelFactory.getInformationObjectNodeModel().addNodeModelListener(new InformationNodeLoader(managerFactory,factory));
+        taggingRelationManager = new TaggingRelationManager(modelFactory.getInformationObjectNodeModel());
+        modelFactory.getInformationObjectModel().addInformationObjectListener(taggingRelationManager);
     }
 
     private void setupActions(GuiComponentFactory factory) {
@@ -144,16 +124,6 @@ public class InformationObjectPlugin extends AbstractPlugin {
         factory.getOutlineView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getDeleteInformationObjectAction()));
     }
 
-    private void setupParsers(ConsoleView consoleView)  {
-        xslExtractor = new XsltMetadataExtractor();
-        try {
-            xslExtractor.addXslt("classpath:org/infoobject/xslt/html.xsl");
-            xslExtractor.addXslt("classpath:org/infoobject/xslt/mediawiki.xsl");
-        } catch (IOException ex) {
-            consoleView.append("Error loading xsl " + ex.getMessage());
-        } catch (TransformerConfigurationException e) {
-            consoleView.append("Error loading xsl " + e.getMessage());
-        }
-    }
+
 
 }

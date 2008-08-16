@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import org.infoobject.core.infoobject.to.InformationObjectTo;
 import org.infoobject.core.infoobject.to.TaggingTo;
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
+import org.infoobject.core.infoobject.to.MetadataTo;
 import org.infoobject.core.infoobject.to.ObjectLinkingTo;
 
 /**
@@ -39,7 +39,7 @@ public class InformationObjectToTransformer implements Transformer<BindingSet, I
         boolean newInfo = info == null;
         if (newInfo){
             info = new InformationObjectTo(infoUri);
-            info.setMetadata(new InformationMetadataTo(infoUri));
+            info.setMetadata(new MetadataTo(infoUri));
             if (bindingSet.hasBinding("info_title")){
                 info.getMetadata().setTitle(bindingSet.getValue("info_title").stringValue());
             }

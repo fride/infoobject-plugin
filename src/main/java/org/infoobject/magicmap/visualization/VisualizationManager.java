@@ -10,8 +10,8 @@ import net.sf.magicmap.client.visualization.VisualNode;
 import net.sf.magicmap.client.visualization.VisualizationContext;
 import net.sf.magicmap.client.visualization.NodeCanvas;
 import edu.uci.ics.jung.graph.impl.UndirectedSparseGraph;
-import org.infoobject.core.infoobject.model.InformationObjectNodeGraph;
-import org.infoobject.core.infoobject.model.RelationEdge;
+import org.infoobject.magicmap.node.model.InformationObjectNodeGraph;
+import org.infoobject.core.relation.domain.RelationEdge;
 import org.infoobject.magicmap.visualization.layout.InformationNodeLayoutManager;
 
 import java.util.Map;

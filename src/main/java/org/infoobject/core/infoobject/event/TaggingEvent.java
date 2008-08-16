@@ -1,7 +1,7 @@
 package org.infoobject.core.infoobject.event;
 
-import org.infoobject.core.infoobject.model.TaggingPost;
-import org.infoobject.core.infoobject.model.InformationObjectModel;
+import org.infoobject.core.infoobject.domain.TaggingPost;
+import org.infoobject.core.infoobject.domain.support.DefaultInformationObjectModel;
 
 import java.util.EventObject;
 
@@ -20,7 +20,7 @@ import java.util.EventObject;
 public class TaggingEvent extends EventObject {
     private final TaggingPost tagging;
 
-    public TaggingEvent(InformationObjectModel o, TaggingPost tagging) {
+    public TaggingEvent(DefaultInformationObjectModel o, TaggingPost tagging) {
         super(o);
         this.tagging = tagging;
     }
@@ -30,7 +30,7 @@ public class TaggingEvent extends EventObject {
     }
 
     @Override
-    public InformationObjectModel getSource() {
-        return (InformationObjectModel) super.getSource();    //To change body of overridden methods use File | Settings | File Templates.
+    public DefaultInformationObjectModel getSource() {
+        return (DefaultInformationObjectModel) super.getSource();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

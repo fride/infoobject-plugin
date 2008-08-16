@@ -5,7 +5,7 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Statement;
 import org.openrdf.model.BNode;
 import org.infoobject.openrdf.util.OpenRdfTemplate;
-import org.infoobject.core.agent.Agent;
+import org.infoobject.core.agent.domain.Agent;
 
 /**
  * <p>

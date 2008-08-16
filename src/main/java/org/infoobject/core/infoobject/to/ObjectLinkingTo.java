@@ -2,7 +2,7 @@ package org.infoobject.core.infoobject.to;
 
 import net.sf.json.JSONObject;
 
-import org.infoobject.core.infoobject.model.ObjectName;
+import org.infoobject.core.infoobject.domain.ObjectName;
 
 /**
  * <p>

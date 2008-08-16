@@ -2,7 +2,7 @@ package org.infoobject.core.infoobject.to;
 
 import org.infoobject.core.infoobject.to.TaggingTo;
 import org.infoobject.core.infoobject.to.ObjectLinkingTo;
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
+import org.infoobject.core.infoobject.to.MetadataTo;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -21,7 +21,7 @@ import java.util.HashSet;
  */
 public class InformationObjectTo {
     private String uri;
-    private InformationMetadataTo metadata;
+    private MetadataTo metadata;
     private Set<TaggingTo> taggings = new HashSet<TaggingTo>();
     private Set<ObjectLinkingTo> objectLinkingTos = new HashSet<ObjectLinkingTo>();
 
@@ -41,11 +41,11 @@ public class InformationObjectTo {
         return objectLinkingTos;
     }
 
-    public InformationMetadataTo getMetadata() {
+    public MetadataTo getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(InformationMetadataTo metadata) {
+    public void setMetadata(MetadataTo metadata) {
         this.metadata = metadata;
     }
 }

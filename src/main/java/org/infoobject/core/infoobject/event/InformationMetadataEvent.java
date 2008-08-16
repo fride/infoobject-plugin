@@ -1,7 +1,7 @@
 package org.infoobject.core.infoobject.event;
 
-import org.infoobject.core.infoobject.model.InformationObjectModel;
-import org.infoobject.core.infoobject.model.InformationObject;
+import org.infoobject.core.infoobject.domain.support.DefaultInformationObjectModel;
+import org.infoobject.core.infoobject.domain.InformationObject;
 
 import java.util.EventObject;
 
@@ -20,7 +20,7 @@ import java.util.EventObject;
 public class InformationMetadataEvent extends EventObject {
     private final InformationObject metadata;
 
-    public InformationMetadataEvent(InformationObjectModel objectModel, InformationObject metadata) {
+    public InformationMetadataEvent(DefaultInformationObjectModel objectModel, InformationObject metadata) {
         super(objectModel);
         this.metadata = metadata;
     }
@@ -30,7 +30,7 @@ public class InformationMetadataEvent extends EventObject {
     }
 
     @Override
-    public InformationObjectModel getSource() {
-        return (InformationObjectModel) super.getSource();
+    public DefaultInformationObjectModel getSource() {
+        return (DefaultInformationObjectModel) super.getSource();
     }
 }

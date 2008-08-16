@@ -1,7 +1,7 @@
 package org.infoobject.core.infoobject.dao;
 
 import org.infoobject.core.infoobject.to.TaggingTo;
-import org.infoobject.core.infoobject.model.Tag;
+import org.infoobject.core.infoobject.domain.Tag;
 
 import java.util.List;
 

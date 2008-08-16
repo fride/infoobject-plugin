@@ -1,16 +1,14 @@
 package org.infoobject.openrdf.infoobject.dao;
 
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.model.URI;
-import org.openrdf.model.Literal;
-import org.infoobject.core.rdf.vocabulary.InformationObjectVoc;
-import org.infoobject.core.rdf.vocabulary.DC;
+import org.infoobject.core.infoobject.dao.InformationMetadataDao;
+import org.infoobject.core.infoobject.to.MetadataTo;
 import org.infoobject.openrdf.util.ConnectionCallback;
 import org.infoobject.openrdf.util.RdfException;
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
-import org.infoobject.core.infoobject.dao.InformationMetadataDao;
+import org.openrdf.model.Statement;
+import org.openrdf.repository.Repository;
+import org.openrdf.repository.RepositoryConnection;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,7 +23,7 @@ import java.util.List;
  *         Date: 07.08.2008
  *         Time: 21:06:50
  */
-public class RdfInformationMetadataDao extends OpenRdfDao<InformationMetadataTo> implements InformationMetadataDao {
+public class RdfInformationMetadataDao extends OpenRdfDao<MetadataTo> implements InformationMetadataDao {
     public RdfInformationMetadataDao(Repository repos) {
         super(repos);
     }
@@ -33,18 +31,14 @@ public class RdfInformationMetadataDao extends OpenRdfDao<InformationMetadataTo>
     /**
      * @param data
      */
-    public void save(final InformationMetadataTo data) {
-        final URI infoUri = getRdfTemplate().createURI(data.getUri());
-        final Literal crawlDate = getRdfTemplate().createLiteral(System.currentTimeMillis());
+    public void save(final MetadataTo data) {
         try {
             getRdfTemplate().withConnection(new ConnectionCallback() {
                 public void doInConnection(RepositoryConnection cnx) throws Exception {
-                    if (data.getTitle() != null){
-                        cnx.add(infoUri, DC.Title, getRdfTemplate().createLiteral(data.getTitle()));
+                    final Iterator<Statement> statementIterator = data.getMetadata().match(data.getMetadata().getSubject(), null, null);
+                    while (statementIterator.hasNext()) {
+                        cnx.add(statementIterator.next());
                     }
-                    cnx.add(infoUri, InformationObjectVoc.size, getRdfTemplate().createLiteral(data.getSize()));
-                    cnx.add(infoUri, DC.Format, getRdfTemplate().createLiteral(data.getMimeType()));
-                    cnx.add(infoUri, InformationObjectVoc.crawlDate, crawlDate);
                 }
             });
         } catch (RdfException e) {
@@ -59,14 +53,14 @@ public class RdfInformationMetadataDao extends OpenRdfDao<InformationMetadataTo>
      * @param uri
      * @return
      */
-    public InformationMetadataTo load(String uri) {
+    public MetadataTo load(String uri) {
         return null;
     }
 
     /**
      * @return
      */
-    public List<InformationMetadataTo> findAll() {
+    public List<MetadataTo> findAll() {
         return null;
     }
 }
