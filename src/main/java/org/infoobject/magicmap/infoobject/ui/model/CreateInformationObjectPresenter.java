@@ -1,36 +1,32 @@
 package org.infoobject.magicmap.infoobject.ui.model;
 
-import org.infoobject.magicmap.infoobject.ui.forms.ObjectLinkForm;
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.swing.EventComboBoxModel;
+import ca.odell.glazedlists.util.concurrent.Lock;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+import net.sf.magicmap.client.gui.MainGUI;
+import net.sf.magicmap.client.gui.utils.GUIUtils;
+import net.sf.magicmap.client.gui.utils.MagicAction;
+import net.sf.magicmap.client.model.node.Node;
+import net.sf.magicmap.client.utils.AbstractModel;
+import org.infoobject.core.infoobject.model.InformationObject;
+import org.infoobject.core.infoobject.model.Tagging;
+import org.infoobject.magicmap.infoobject.ui.forms.InformationObjectForm;
 import org.infoobject.magicmap.infoobject.ui.forms.InformationTaggingForm;
 import org.infoobject.magicmap.infoobject.ui.forms.ObjectLinkDetailsForm;
-import org.infoobject.magicmap.infoobject.ui.forms.InformationObjectForm;
+import org.infoobject.magicmap.infoobject.ui.forms.ObjectLinkForm;
 import org.infoobject.magicmap.infoobject.ui.util.InformationObjectNodeListFactory;
-import org.infoobject.core.infoobject.model.InformationObject;
-import org.infoobject.core.infoobject.model.Tag;
-import org.infoobject.core.infoobject.model.Tagging;
-import net.sf.magicmap.client.model.node.Node;
-import net.sf.magicmap.client.gui.utils.MagicAction;
-import net.sf.magicmap.client.gui.utils.GUIUtils;
-import net.sf.magicmap.client.gui.MainGUI;
-import net.sf.magicmap.client.utils.AbstractModel;
-import ca.odell.glazedlists.swing.EventComboBoxModel;
-import ca.odell.glazedlists.swing.EventSelectionModel;
-import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.BasicEventList;
-import ca.odell.glazedlists.util.concurrent.ReadWriteLock;
-import ca.odell.glazedlists.util.concurrent.Lock;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import java.awt.*;
-import java.util.*;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.builder.DefaultFormBuilder;
+import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -160,7 +156,10 @@ public class CreateInformationObjectPresenter extends AbstractModel implements I
     public void editInformationObject() {
         buildView();
     }
-    
+
+    /**
+     * Shows a dialog to enter a new information object.
+     */
     public void createInformationObject() {
         buildView();
         GUIUtils.locateOnScreen(dlg);
@@ -233,6 +232,9 @@ public class CreateInformationObjectPresenter extends AbstractModel implements I
         return selectedNode;
     }
 
+    /**
+     * 
+     */
     private void createInformation() {
         String type = objectLinkForm.getNodeType().getName();
         final java.util.List<String> tags = taggingForm.getTags();
