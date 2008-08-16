@@ -8,7 +8,6 @@ import net.sf.magicmap.client.gui.views.OutlineView;
 import net.sf.magicmap.client.model.node.INodeSelectionModel;
 import net.sf.magicmap.client.model.outline.OutlineModel;
 import net.sf.magicmap.client.visualization.NodeCanvas;
-import org.infoobject.magicmap.infoobject.ui.util.InformationObjectNodeListFactory;
 
 import javax.swing.*;
 

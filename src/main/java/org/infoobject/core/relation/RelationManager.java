@@ -1,11 +1,6 @@
 package org.infoobject.core.relation;
 
-import org.infoobject.core.infoobject.event.InformationObjectListener;
-import org.infoobject.core.infoobject.event.TaggingEvent;
-import org.infoobject.core.infoobject.event.ObjectLinkingEvent;
-import org.infoobject.core.infoobject.event.InformationMetadataEvent;
 import org.infoobject.core.infoobject.model.InformationObjectNodeGraph;
-import org.infoobject.core.infoobject.model.ObjectLinkPost;
 
 /**
  * <p>

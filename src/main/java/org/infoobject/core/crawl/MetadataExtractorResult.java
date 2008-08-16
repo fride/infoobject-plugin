@@ -1,8 +1,6 @@
 package org.infoobject.core.crawl;
 
-import org.openrdf.model.Graph;
 import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.model.impl.URIImpl;
 import org.infoobject.core.rdf.RdfContainer;
 
 import java.sql.Timestamp;

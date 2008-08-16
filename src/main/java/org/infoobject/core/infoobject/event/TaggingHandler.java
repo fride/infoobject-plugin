@@ -1,7 +1,5 @@
 package org.infoobject.core.infoobject.event;
 
-import org.infoobject.core.infoobject.to.TaggingTo;
-import org.infoobject.core.infoobject.model.Tagging;
 import org.infoobject.core.infoobject.model.TaggingPost;
 
 /**

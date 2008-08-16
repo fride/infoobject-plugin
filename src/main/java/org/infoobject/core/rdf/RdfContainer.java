@@ -7,7 +7,6 @@ import org.infoobject.core.rdf.vocabulary.DC;
 
 import java.util.Iterator;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * <p>

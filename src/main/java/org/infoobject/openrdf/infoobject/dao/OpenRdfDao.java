@@ -7,8 +7,6 @@ import org.openrdf.model.BNode;
 import org.infoobject.openrdf.util.OpenRdfTemplate;
 import org.infoobject.core.agent.Agent;
 
-import java.util.List;
-
 /**
  * <p>
  * Class OpenRdfDao ZUSAMMENFASSUNG

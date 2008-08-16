@@ -13,12 +13,6 @@ import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.query.*;
-import org.openrdf.model.*;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  *

@@ -1,7 +1,6 @@
 package org.infoobject.core.util.ui;
 
 import javax.swing.*;
-import java.beans.PropertyVetoException;
 import java.beans.PropertyChangeListener;
 
 /**

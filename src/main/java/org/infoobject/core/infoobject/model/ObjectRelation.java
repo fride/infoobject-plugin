@@ -1,7 +1,6 @@
 package org.infoobject.core.infoobject.model;
 
 import org.infoobject.core.infoobject.model.ObjectName;
-import org.infoobject.core.infoobject.to.ObjectLinkingTo;
 
 import java.util.Set;
 import java.util.HashSet;

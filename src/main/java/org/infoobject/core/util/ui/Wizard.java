@@ -5,8 +5,6 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 import javax.swing.*;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Iterator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.beans.VetoableChangeSupport;

@@ -9,8 +9,6 @@ import net.sf.magicmap.client.visualization.VisualEdge;
 import net.sf.magicmap.client.visualization.VisualNode;
 import net.sf.magicmap.client.visualization.VisualizationContext;
 import net.sf.magicmap.client.visualization.NodeCanvas;
-import edu.uci.ics.jung.visualization.MagicSpringLayout;
-import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.impl.UndirectedSparseGraph;
 import org.infoobject.core.infoobject.model.InformationObjectNodeGraph;
 import org.infoobject.core.infoobject.model.RelationEdge;

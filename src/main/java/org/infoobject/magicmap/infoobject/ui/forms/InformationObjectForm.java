@@ -9,10 +9,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import org.infoobject.core.infoobject.model.TaggingPost;
-import org.infoobject.core.infoobject.model.InformationObject;
-import org.infoobject.core.infoobject.model.Tag;
-import org.infoobject.core.agent.Agent;
 
 /**
  * <p>

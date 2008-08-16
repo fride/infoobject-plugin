@@ -1,12 +1,8 @@
 package org.infoobject.core.tag;
 
-import org.infoobject.core.infoobject.event.TaggingHandler;
 import org.infoobject.core.infoobject.event.InformationObjectListenerAdapter;
 import org.infoobject.core.infoobject.event.TaggingEvent;
 import org.infoobject.core.infoobject.model.*;
-import org.infoobject.core.relation.RelationSource;
-
-import java.util.List;
 
 /**
  * <p>

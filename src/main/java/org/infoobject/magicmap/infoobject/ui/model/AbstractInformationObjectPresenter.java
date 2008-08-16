@@ -1,11 +1,6 @@
 package org.infoobject.magicmap.infoobject.ui.model;
 
-import ca.odell.glazedlists.BasicEventList;
-import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.impl.ReadOnlyList;
-import ca.odell.glazedlists.util.concurrent.Lock;
 import net.sf.magicmap.client.gui.MainGUI;
-import net.sf.magicmap.client.interfaces.NodeModelListener;
 import net.sf.magicmap.client.model.node.Node;
 import net.sf.magicmap.client.utils.AbstractModel;
 import org.infoobject.core.crawl.CrawlJobResultHandler;
@@ -14,7 +9,6 @@ import org.infoobject.core.crawl.CrawlerManager;
 import org.infoobject.core.infoobject.InformationNodeManager;
 import org.infoobject.core.infoobject.InformationObjectManager;
 import org.infoobject.core.infoobject.model.InformationObject;
-import org.infoobject.core.infoobject.model.InformationObjectNode;
 import org.infoobject.core.infoobject.model.ObjectName;
 import org.infoobject.core.infoobject.to.InformationMetadataTo;
 import org.infoobject.core.infoobject.to.ObjectLinkingTo;

@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import foxtrot.Task;
 import foxtrot.Worker;
 import net.sf.magicmap.client.utils.DocumentAdapter;
-import net.sf.magicmap.client.gui.MainGUI;
 import net.sf.magicmap.client.gui.utils.MagicAction;
 import net.sf.magicmap.client.gui.utils.GUIUtils;
 import org.infoobject.core.crawl.CrawlerManager;

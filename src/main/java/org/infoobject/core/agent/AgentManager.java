@@ -1,7 +1,5 @@
 package org.infoobject.core.agent;
 
-import org.apache.commons.collections15.map.MultiKeyMap;
-
 import java.util.Map;
 import java.util.HashMap;
 

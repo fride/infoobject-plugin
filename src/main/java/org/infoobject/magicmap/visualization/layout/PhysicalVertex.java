@@ -2,7 +2,6 @@ package org.infoobject.magicmap.visualization.layout;
 
 import edu.uci.ics.jung.graph.impl.UndirectedSparseVertex;
 import edu.uci.ics.jung.utils.UserData;
-import org.infoobject.core.infoobject.model.InformationObjectNode;
 
 import java.lang.ref.WeakReference;
 

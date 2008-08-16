@@ -3,7 +3,6 @@ package org.infoobject.core.crawl;
 import org.infoobject.core.crawl.CrawlJobResultHandler;
 import org.infoobject.core.rdf.vocabulary.InformationObjectVoc;
 import org.infoobject.core.rdf.RdfContainer;
-import org.openrdf.model.Graph;
 import org.openrdf.model.Statement;
 import org.openrdf.model.Resource;
 import org.openrdf.model.vocabulary.RDF;

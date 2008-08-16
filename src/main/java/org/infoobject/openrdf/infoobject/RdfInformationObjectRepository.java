@@ -45,7 +45,7 @@ public class RdfInformationObjectRepository extends InformationObjectRepository 
     private final OpenRdfTemplate rdfTemplate;
     static StringTemplateGroup templates = new StringTemplateGroup("sparql");
 
-    // org.infoobject.template
+    // infoobject.template
     public RdfInformationObjectRepository(Repository repos) {
         super(new RdfTaggingDao(repos),new RdfInformationMetadataDao(repos),new RdfObjectLinkDao(repos));
         this.repos = repos;

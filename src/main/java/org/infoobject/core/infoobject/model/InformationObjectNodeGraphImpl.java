@@ -14,7 +14,6 @@ import edu.uci.ics.jung.graph.event.GraphEventType;
 import edu.uci.ics.jung.utils.UserData;
 import org.infoobject.core.infoobject.model.InformationObjectNodeGraph;
 import org.infoobject.core.infoobject.model.RelationEdge;
-import org.infoobject.core.infoobject.InformationNodeManager;
 
 /**
  * <p>

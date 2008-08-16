@@ -1,6 +1,5 @@
 package org.infoobject.core.infoobject.event;
 
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
 import org.infoobject.core.infoobject.model.InformationObjectModel;
 import org.infoobject.core.infoobject.model.InformationObject;
 

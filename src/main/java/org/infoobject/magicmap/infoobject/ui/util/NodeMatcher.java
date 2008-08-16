@@ -3,7 +3,6 @@ package org.infoobject.magicmap.infoobject.ui.util;
 import ca.odell.glazedlists.matchers.Matcher;
 import net.sf.magicmap.client.model.node.Node;
 import org.infoobject.core.infoobject.model.InformationObject;
-import org.infoobject.core.infoobject.model.InformationObjectModel;
 import org.infoobject.core.infoobject.model.ObjectName;
 
 /**

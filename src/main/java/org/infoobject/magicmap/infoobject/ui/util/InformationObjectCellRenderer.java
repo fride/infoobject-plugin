@@ -1,6 +1,5 @@
 package org.infoobject.magicmap.infoobject.ui.util;
 
-import org.infoobject.core.infoobject.model.TaggingPost;
 import org.infoobject.core.infoobject.model.InformationObject;
 
 import javax.swing.*;

@@ -1,6 +1,5 @@
 package org.infoobject.core.crawl;
 
-import org.openrdf.model.Graph;
 import org.infoobject.core.rdf.RdfContainer;
 
 /**

@@ -2,7 +2,6 @@ package org.infoobject.magicmap.infoobject.ui.util;
 
 import ca.odell.glazedlists.matchers.Matcher;
 import org.apache.commons.collections15.CollectionUtils;
-import org.infoobject.core.infoobject.model.InformationObject;
 import org.infoobject.core.infoobject.model.InformationObjectNode;
 import org.infoobject.core.infoobject.model.Tag;
 

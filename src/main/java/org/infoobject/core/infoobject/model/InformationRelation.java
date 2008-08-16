@@ -1,10 +1,6 @@
 package org.infoobject.core.infoobject.model;
 
-import org.apache.commons.collections15.CollectionUtils;
-
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * <p>

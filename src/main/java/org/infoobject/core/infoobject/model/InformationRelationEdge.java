@@ -3,9 +3,6 @@ package org.infoobject.core.infoobject.model;
 import org.infoobject.core.infoobject.model.RelationEdge;
 import org.infoobject.core.infoobject.model.InformationRelation;
 
-import java.util.Set;
-import java.util.HashSet;
-
 /**
  * <p>
  * Class InformationRelationEdge ZUSAMMENFASSUNG

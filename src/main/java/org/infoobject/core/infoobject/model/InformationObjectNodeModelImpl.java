@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.infoobject.core.infoobject.model.InformationObjectNodeModel;
-import org.infoobject.core.util.Digest;
 
 /**
  * <p>
