@@ -1,22 +1,22 @@
 package org.infoobject.openrdf.infoobject.dao;
 
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.BindingSet;
-
-import org.infoobject.core.infoobject.to.ObjectLinkingTo;
-import org.infoobject.core.infoobject.model.ObjectName;
 import org.infoobject.core.infoobject.dao.ObjectLinkDao;
-import org.infoobject.core.util.Digest;
+import org.infoobject.core.infoobject.model.ObjectName;
+import org.infoobject.core.infoobject.to.ObjectLinkingTo;
 import org.infoobject.core.rdf.vocabulary.DC;
 import org.infoobject.core.rdf.vocabulary.InformationObjectVoc;
-import org.infoobject.openrdf.util.ConnectionCallback;
+import org.infoobject.core.util.Digest;
 import org.infoobject.openrdf.util.BindingSetMapper;
+import org.infoobject.openrdf.util.ConnectionCallback;
 import org.infoobject.openrdf.util.RdfException;
+import org.openrdf.model.URI;
+import org.openrdf.model.ValueFactory;
+import org.openrdf.model.vocabulary.RDF;
+import org.openrdf.query.BindingSet;
+import org.openrdf.repository.Repository;
+import org.openrdf.repository.RepositoryConnection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,7 +63,31 @@ public class RdfObjectLinkDao extends OpenRdfDao<ObjectLinkingTo> implements Obj
         } catch (RdfException e) {
             throw new IllegalArgumentException(e);
         }
+    }
 
+    /**
+     * @param linkingTo
+     * @return
+     */
+    public boolean delete(ObjectLinkingTo linkingTo) {
+        final ValueFactory factory = getRdfTemplate().getValueFactory();
+        final URI objectId = linkingTo.getObject().getNodeUri(factory);
+        final URI linkNode = getRdfTemplate().createURI(linkUri, Digest.md5(linkingTo.getUri(), objectId.toString()));
+        final ArrayList<Boolean> deleted =  new ArrayList<Boolean>();
+        try {
+          getRdfTemplate().withConnection(new ConnectionCallback() {
+              public void doInConnection(RepositoryConnection cnx) throws Exception {
+                if (cnx.hasStatement(linkNode, RDF.TYPE, InformationObjectVoc.ObjectLink,false)){
+                    deleted.add(true);
+                    cnx.remove((URI)null, InformationObjectVoc.hasObjectLink, linkNode);
+                    cnx.remove(linkNode, null,null);
+                }
+              }
+          });
+        } catch (RdfException e) {
+            throw new IllegalArgumentException(e);
+        }
+        return deleted.size() == 1; 
     }
 
     /**

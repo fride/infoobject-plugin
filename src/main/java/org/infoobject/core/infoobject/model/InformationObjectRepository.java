@@ -1,14 +1,15 @@
 package org.infoobject.core.infoobject.model;
 
-import org.infoobject.core.infoobject.dao.TaggingDao;
 import org.infoobject.core.infoobject.dao.InformationMetadataDao;
 import org.infoobject.core.infoobject.dao.ObjectLinkDao;
-import org.infoobject.core.infoobject.to.InformationObjectTo;
-import org.infoobject.core.infoobject.to.TaggingTo;
-import org.infoobject.core.infoobject.to.ObjectLinkingTo;
+import org.infoobject.core.infoobject.dao.TaggingDao;
 import org.infoobject.core.infoobject.to.InformationMetadataTo;
+import org.infoobject.core.infoobject.to.InformationObjectTo;
+import org.infoobject.core.infoobject.to.ObjectLinkingTo;
+import org.infoobject.core.infoobject.to.TaggingTo;
 
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * <p>
@@ -101,5 +102,15 @@ public abstract class InformationObjectRepository {
 
     protected ObjectLinkDao getObjectLinkDao() {
         return objectLinkDao;
+    }
+
+    public List<ObjectName> delete(Iterable<ObjectLinkingTo> objectLinkingTos) {
+        List<ObjectName> deleted = new LinkedList<ObjectName>();
+        for (ObjectLinkingTo to : objectLinkingTos) {
+            if (getObjectLinkDao().delete(to)) {
+                deleted.add(to.getObject());
+            }
+        }
+        return deleted;
     }
 }

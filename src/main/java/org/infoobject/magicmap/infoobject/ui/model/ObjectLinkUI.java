@@ -70,7 +70,7 @@ public class ObjectLinkUI extends AbstractModel {
     }
 
     public void setSelectedNode(Node newSelectedNode) {
-        if (this.selectedNode == null || !this.selectedNode.equals(newSelectedNode)) {
+        if (this.selectedNode == null || (newSelectedNode != null && !this.selectedNode.equals(newSelectedNode))) {
             Node oldselectedNode = this.selectedNode;
             this.selectedNode = newSelectedNode;
             firePropertyChange("newSelectedNode", oldselectedNode, this.selectedNode);
@@ -94,7 +94,7 @@ public class ObjectLinkUI extends AbstractModel {
     }
 
     public void setSelectedInformationObject(InformationObject selectedInformationObject) {
-        if (this.selectedInformationObject == null || !this.selectedInformationObject.equals(selectedInformationObject)) {
+        if (this.selectedInformationObject == null || (selectedInformationObject != null && !this.selectedInformationObject.equals(selectedInformationObject))) {
             InformationObject old = this.selectedInformationObject;
 
             this.selectedInformationObject = selectedInformationObject;

@@ -1,16 +1,14 @@
 package org.infoobject.core.infoobject;
 
-import org.infoobject.core.infoobject.to.InformationObjectTo;
-import org.infoobject.core.infoobject.to.TaggingTo;
-import org.infoobject.core.infoobject.to.ObjectLinkingTo;
-import org.infoobject.core.infoobject.to.InformationMetadataTo;
-import org.infoobject.core.infoobject.model.*;
 import org.infoobject.core.agent.AgentManager;
+import org.infoobject.core.infoobject.model.*;
+import org.infoobject.core.infoobject.to.InformationMetadataTo;
+import org.infoobject.core.infoobject.to.InformationObjectTo;
+import org.infoobject.core.infoobject.to.ObjectLinkingTo;
+import org.infoobject.core.infoobject.to.TaggingTo;
 
 import java.sql.Timestamp;
-import java.util.WeakHashMap;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -159,5 +157,11 @@ public class InformationObjectManager {
     public InformationObjectModel getModel() {
         return this.model;
     }
+
+    public void delete(InformationObject informationObject, ObjectName objectName, String agentId) {
+        ObjectLinkingTo link = new ObjectLinkingTo(informationObject.getUri(), objectName, "",agentId);
+        List<ObjectName> removed = repository.delete(Collections.singleton(link));
+    }
+
 
 }

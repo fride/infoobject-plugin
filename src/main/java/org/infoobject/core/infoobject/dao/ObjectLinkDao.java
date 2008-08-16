@@ -15,7 +15,16 @@ import org.infoobject.core.infoobject.to.ObjectLinkingTo;
  *         Time: 00:23:37
  */
 public interface ObjectLinkDao {
+    
     void save(ObjectLinkingTo linkingTo);
 
+    
     void commit();
+
+    /**
+     * 
+     * @param to
+     * @return
+     */
+    boolean delete(ObjectLinkingTo to);
 }

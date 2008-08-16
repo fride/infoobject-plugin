@@ -102,6 +102,10 @@ public class AbstractInformationObjectPresenter extends AbstractModel {
     }
 
 
+    public void delete(InformationObject info, Node node) {
+        informationObjectManager.delete(info, new ObjectName(node.getName(), node.getModel().getServerID()), "mailto:noone@nix.de");            
+    }
+
     public void createInformationObject(Node node, InformationObject informationObject, String type, Map<String, Boolean> tags) {
         this.informationObjectManager.saveInformationMetadata(
                 Collections.singletonList(informationObject.getMetadata()));
