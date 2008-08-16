@@ -102,10 +102,33 @@ public class InformationObjectModel {
         }
     }
 
+    /**
+     * 
+     * @param linkingTo
+     */
     protected void fireObjectLinking(ObjectLinkPost linkingTo) {
         ObjectLinkingEvent event = new ObjectLinkingEvent(this, linkingTo);
         for (InformationObjectListener l:getInformationObjectListener()) {
             l.onObjectLinking(event);
+        }
+    }
+
+    /**
+     * 
+     * @param uri
+     * @param name
+     */
+    public void remove(String uri, ObjectName name) {
+        final InformationObject informationObject = informations.get(uri);
+        if (informationObject != null && informationObject.remove(name)){
+            fireObjectLinkingRemoved(informationObject, name);
+        }
+    }
+
+    protected void fireObjectLinkingRemoved(InformationObject informationObject, ObjectName name) {
+        ObjectLinkingEvent event = new ObjectLinkingEvent(this, new ObjectLinkPost(new ObjectLink(informationObject, name),null,null));
+        for (InformationObjectListener l:getInformationObjectListener()) {
+            l.onObjectLinkingRemoved(event);
         }
     }
 }

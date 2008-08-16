@@ -107,4 +107,9 @@ public class InformationObject {
     public int hashCode() {
         return (uri != null ? uri.hashCode() : 0);
     }
+
+
+    boolean remove(ObjectName name) {
+        return null != this.objectLinks.remove(name);
+    }
 }

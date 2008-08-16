@@ -161,6 +161,9 @@ public class InformationObjectManager {
     public void delete(InformationObject informationObject, ObjectName objectName, String agentId) {
         ObjectLinkingTo link = new ObjectLinkingTo(informationObject.getUri(), objectName, "",agentId);
         List<ObjectName> removed = repository.delete(Collections.singleton(link));
+        for (ObjectName name : removed ) {
+            model.remove(informationObject.getUri(), name);
+        }
     }
 
 

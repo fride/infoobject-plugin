@@ -1,4 +1,4 @@
-package org.infoobject.core.tag;
+package org.infoobject.core.infoobject.tag;
 
 import org.infoobject.core.infoobject.event.InformationObjectListenerAdapter;
 import org.infoobject.core.infoobject.event.TaggingEvent;

@@ -1,4 +1,4 @@
-package org.infoobject.core.relation;
+package org.infoobject.core.infoobject.relation;
 
 import org.infoobject.core.infoobject.model.InformationObjectNodeGraph;
 
