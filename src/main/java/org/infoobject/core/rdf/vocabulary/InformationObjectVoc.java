@@ -41,7 +41,8 @@ public class InformationObjectVoc {
     public static final URI Link;
     public static final URI HardLink;
 
-    public static URI hasObjectLink;
+    public final static URI hasObjectLink;
+    public static final  URI depiction;
 
     static{
         final ValueFactory factory = new ValueFactoryImpl();
@@ -63,5 +64,7 @@ public class InformationObjectVoc {
         hasObjectLink = factory.createURI(NAMESPACE, "hasObjectLink");
         Link = factory.createURI(NAMESPACE, "Link");
         HardLink = factory.createURI(NAMESPACE, "HardLink");
+        depiction = factory.createURI(NAMESPACE, "depiction");
     }
+
 }

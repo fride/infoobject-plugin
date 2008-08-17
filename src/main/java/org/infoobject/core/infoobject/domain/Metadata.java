@@ -2,9 +2,12 @@ package org.infoobject.core.infoobject.domain;
 
 import org.infoobject.core.rdf.RdfContainer;
 import org.infoobject.core.rdf.vocabulary.DC;
+import org.infoobject.core.rdf.vocabulary.InformationObjectVoc;
 import org.openrdf.model.impl.GraphImpl;
+import org.openrdf.model.Statement;
 
 import java.sql.Timestamp;
+import java.util.Iterator;
 
 /**
  * <p>
@@ -47,8 +50,19 @@ public class Metadata extends RdfContainer {
         super.setUniqueProperty(DC.Title, title);
     }
 
-
     public String getMimeType() {
         return getUniqeObjectString(DC.Format, "application/unknown");
+    }
+
+    public String getDepiction() {
+        StringBuilder b = new StringBuilder();
+        final Iterator<Statement> statementIterator = match(null, InformationObjectVoc.depiction, null);
+        while (statementIterator.hasNext()) {
+            b.append(statementIterator.next().getObject().stringValue());
+            if (statementIterator.hasNext()) {
+                b.append(",");
+            }
+        }
+        return b.toString();
     }
 }

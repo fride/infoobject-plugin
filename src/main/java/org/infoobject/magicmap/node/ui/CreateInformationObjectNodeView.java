@@ -19,6 +19,7 @@ import org.infoobject.core.crawl.CrawlJobResultHandlerAdapter;
 import org.infoobject.core.crawl.CrawlerManager;
 import org.infoobject.core.crawl.ui.CrawlUrlDialog;
 import org.infoobject.core.infoobject.application.InformationObjectManager;
+import org.infoobject.core.infoobject.domain.InformationObject;
 import org.infoobject.core.infoobject.domain.Metadata;
 import org.infoobject.core.infoobject.domain.ObjectName;
 import org.infoobject.core.infoobject.domain.Tagging;
@@ -91,12 +92,17 @@ public class CreateInformationObjectNodeView extends AbstractModel {
         setupActions();
     }
 
-    private void setInformation(org.infoobject.core.infoobject.domain.InformationObject info) {
+    /**
+     * 
+     * @param info
+     */
+    private void setInformation(InformationObject info) {
         final Lock lock = this.currentTags.getReadWriteLock().writeLock();
         if (info != null) {
             final Metadata metadata = info.getMetadata();
             informationMetadataView.setMimeType(metadata.getMimeType());
             informationMetadataView.setTitle(metadata.getTitle());
+            informationMetadataView.setDepiction(metadata.getDepiction());
             try {
                 lock.lock();
                 this.currentTags.clear();

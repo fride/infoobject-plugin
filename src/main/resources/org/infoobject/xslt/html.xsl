@@ -15,6 +15,7 @@
 @prefix xmlns:       <http://www.w3.org/2001/XMLSchema#> .
 @prefix html:       <http:/www.magicmap.de/2008/voc/html_facet#> .
 @prefix dc:       <http://purl.org/dc/elements/1.1/> .
+@prefix nfo:       <http://www.magicmap.de/2008/06/infoobject#> .
 <> rdfs:Label "Mediawiki" .
 ]]>
         <xsl:apply-templates/>
@@ -22,6 +23,9 @@
 
     <xsl:template match="//*[name()='title']">
         &lt;<xsl:value-of select="$base_uri"></xsl:value-of>&gt; dc:title "<xsl:value-of select="text()"></xsl:value-of>" .        
+    </xsl:template>
+    <xsl:template match="//*[name()='link' and contains(concat(' ' ,@rel, ' '), ' icon ')]">
+        &lt;<xsl:value-of select="$base_uri"></xsl:value-of>&gt; nfo:depiction &lt;<xsl:value-of select="@href"></xsl:value-of>&gt; .        
     </xsl:template>
     <xsl:template match="//*[name()='a' and not(starts-with(@href, '#'))]">
         <xsl:value-of select="$subject"/>

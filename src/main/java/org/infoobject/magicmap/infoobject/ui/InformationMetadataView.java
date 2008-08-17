@@ -26,8 +26,12 @@ import java.beans.PropertyVetoException;
 public class InformationMetadataView extends AbstractModel {
     private JTextField title = new JTextField(10);
     private JCheckBox editTitle = new JCheckBox("€ndern");
+
     private JTextField mimeType = new JTextField();
     private JCheckBox editMime = new JCheckBox("€ndern");
+
+    private JTextField depiction = new JTextField();
+    private JCheckBox editDepiction = new JCheckBox("€ndern");
 
     private boolean mimeEditable;
     private boolean titleEditable;
@@ -68,7 +72,13 @@ public class InformationMetadataView extends AbstractModel {
             b.add(new JLabel("Mime"), cc.xy(1, b.getRowCount()));
             b.add(mimeType, cc.xy(3, b.getRowCount()));
             b.add(editMime, cc.xy(5, b.getRowCount()));
-            
+
+            b.appendRelatedComponentsGapRow();
+            b.appendRow("p");
+            b.add(new JLabel("Depiction"), cc.xy(1, b.getRowCount()));
+            b.add(depiction, cc.xy(3, b.getRowCount()));
+            b.add(editDepiction, cc.xy(5, b.getRowCount()));
+
             b.appendRelatedComponentsGapRow();
 
             form = b.getPanel();
@@ -97,6 +107,19 @@ public class InformationMetadataView extends AbstractModel {
         }
 
     }
+
+     public void setDepiction(String s) {
+        String old = this.depiction.getText();
+        if (!old.equals(s)) {
+            depiction.setText(s);
+            firePropertyChange("depiction", old, s);
+        }
+
+    }
+    public String getDepiction() {
+        return depiction.getText();
+    }
+
 
     public String getMimeType(){
         return this.mimeType.getText();

@@ -72,6 +72,8 @@ public class VisualizationManager {
                 
             }
         });
+
+        
     }
 
     private void removeEdge(RelationEdge edge) {

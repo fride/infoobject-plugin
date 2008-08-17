@@ -17,6 +17,7 @@ import org.infoobject.magicmap.node.ui.InformationNodePresenter;
 import org.infoobject.magicmap.node.ui.action.LoadAction;
 import org.infoobject.magicmap.node.ui.action.ShowCreateInformationObjectAction;
 import org.infoobject.magicmap.visualization.application.VisualizationManager;
+import org.infoobject.magicmap.visualization.ui.VisualizationView;
 
 import javax.swing.*;
 
@@ -37,7 +38,7 @@ public class GuiComponentFactory implements ComponentFactory {
     private InformationNodePresenter informationNodePresenter;
     private VisualizationManager visualizationManager;
     private CreateInformationObjectNodeView createInformationObjectView;
-    
+    private VisualizationView visualizationView;
     private final ModelFactory modelFactory;
     private final PluginManagerFactory managerFactory;
 
@@ -164,6 +165,13 @@ public class GuiComponentFactory implements ComponentFactory {
         return createInformationObjectView;
     }
 
+    public VisualizationView getVisualizationView() {
+        if (visualizationView == null) {
+            visualizationView = new VisualizationView(getVisualizationManager());
+        }
+        return visualizationView;
+    }
+
     public void start() {
 
         managerFactory.start();
@@ -188,6 +196,7 @@ public class GuiComponentFactory implements ComponentFactory {
         getInfoObjectMenu().add(GUIBuilder.createCheckBoxMenuItem(getInformationNodePresenter().getEnableAutoLoadAction(), true));
         // Visualisierung starten
         getVisualizationManager().start();
+        getVisualizationView();
 
     }
 
