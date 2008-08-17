@@ -2,6 +2,7 @@ package org.infoobject.magicmap.components;
 
 import net.sf.magicmap.client.gui.MainFrame;
 import net.sf.magicmap.client.gui.MainGUI;
+import net.sf.magicmap.client.gui.utils.GUIBuilder;
 import net.sf.magicmap.client.gui.views.ConsoleView;
 import net.sf.magicmap.client.gui.views.MapView;
 import net.sf.magicmap.client.gui.views.OutlineView;
@@ -10,9 +11,12 @@ import net.sf.magicmap.client.model.outline.OutlineModel;
 import net.sf.magicmap.client.visualization.NodeCanvas;
 import org.infoobject.core.components.ComponentFactory;
 import org.infoobject.core.components.ModelFactory;
-import org.infoobject.core.infoobject.ui.util.InformationObjectNodeListFactory;
-import org.infoobject.core.infoobject.ui.model.InformationObjectPresenter;
-import org.infoobject.core.infoobject.ui.action.AbstractNodeAction;
+import org.infoobject.magicmap.infoobject.ui.util.InformationObjectNodeListFactory;
+import org.infoobject.magicmap.node.ui.CreateInformationObjectNodeView;
+import org.infoobject.magicmap.node.ui.InformationNodePresenter;
+import org.infoobject.magicmap.node.ui.action.LoadAction;
+import org.infoobject.magicmap.node.ui.action.ShowCreateInformationObjectAction;
+import org.infoobject.magicmap.visualization.application.VisualizationManager;
 
 import javax.swing.*;
 
@@ -30,7 +34,10 @@ public class GuiComponentFactory implements ComponentFactory {
     private  MainFrame mainFrame;
     private  JMenu infoMenu;
     private InformationObjectNodeListFactory informationObjectNodeListFactory;
-    private InformationObjectPresenter informationObjectPresenter;
+    private InformationNodePresenter informationNodePresenter;
+    private VisualizationManager visualizationManager;
+    private CreateInformationObjectNodeView createInformationObjectView;
+    
     private final ModelFactory modelFactory;
     private final PluginManagerFactory managerFactory;
 
@@ -48,6 +55,17 @@ public class GuiComponentFactory implements ComponentFactory {
             outlineModel = getOutlineView().getOutlineModel();
         }
         return outlineModel;
+    }
+
+
+    public VisualizationManager getVisualizationManager() {
+        if (visualizationManager == null) {
+            visualizationManager = new VisualizationManager(
+                    modelFactory.getInformationObjectNodeGraph(),
+                    modelFactory.getInformationObjectNodeModel(), 
+                    getNodeCanvas());
+        }
+        return visualizationManager;
     }
 
     /**
@@ -127,31 +145,50 @@ public class GuiComponentFactory implements ComponentFactory {
         return informationObjectNodeListFactory;
     }
 
-    public InformationObjectPresenter getInformationObjectPresenter() {
-        if (informationObjectPresenter == null ) {
-            informationObjectPresenter = new InformationObjectPresenter(
-                    managerFactory.getInformationNodeManager(), managerFactory.getInformationObjectManager(), managerFactory.getCrawlerManager(),
-                    getInformationObjectNodeListFactory()
-            );
+    public InformationNodePresenter getInformationNodePresenter() {
+        if (informationNodePresenter == null) {
+            informationNodePresenter = new InformationNodePresenter(managerFactory.getInformationNodeManager());
         }
-        return informationObjectPresenter;
+        return informationNodePresenter;
+    }
+
+
+
+    public CreateInformationObjectNodeView getCreateInformationObjectView() {
+        if (createInformationObjectView == null) {
+            createInformationObjectView = new CreateInformationObjectNodeView(
+                    managerFactory.getInformationObjectManager(),
+                    managerFactory.getCrawlerManager(),
+                    getInformationObjectNodeListFactory());
+        }
+        return createInformationObjectView;
     }
 
     public void start() {
-        final InformationObjectPresenter presenter = getInformationObjectPresenter();
-        final AbstractNodeAction createAction = presenter.getShowCreateAnEditDialogAction();
-        getNodeSelectionModel().addNodeModelSelectionListener(createAction);
-        final AbstractNodeAction deleteAction = presenter.getDeleteInformationObjectAction();
-        getNodeSelectionModel().addNodeModelSelectionListener(deleteAction);
+
+        managerFactory.start();
+        ShowCreateInformationObjectAction showCreateAction = new ShowCreateInformationObjectAction(getCreateInformationObjectView(), getMainFrame());
+        getNodeSelectionModel().addNodeModelSelectionListener(showCreateAction);
+
+        LoadAction loadAction = new LoadAction(managerFactory.getInformationNodeManager());
+        
+        getNodeSelectionModel().addNodeModelSelectionListener(loadAction);
 
         //factory.getMapView().getMenuContainer().addSeperator();
-        this.getMapView().getMenuContainer().addNodeMenuItem(presenter, new JMenuItem(createAction));
-        this.getMapView().getMenuContainer().addNodeMenuItem(presenter, new JMenuItem(deleteAction));
+        this.getMapView().getMenuContainer().addNodeMenuItem(this, new JMenuItem(showCreateAction));
+        this.getMapView().getMenuContainer().addNodeMenuItem(this, new JMenuItem(loadAction));
+        //this.getMapView().getMenuContainer().addNodeMenuItem(presenter, new JMenuItem(deleteAction));
 
-        this.getOutlineView().getMenuContainer().addNodeMenuItem(presenter, new JMenuItem(createAction));
-        this.getOutlineView().getMenuContainer().addNodeMenuItem(presenter, new JMenuItem(deleteAction));
+        this.getOutlineView().getMenuContainer().addNodeMenuItem(this, new JMenuItem(showCreateAction));
+        this.getOutlineView().getMenuContainer().addNodeMenuItem(this, new JMenuItem(loadAction));
+        //this.getOutlineView().getMenuContainer().addNodeMenuItem(presenter, new JMenuItem(deleteAction));
 
         //To change body of implemented methods use File | Settings | File Templates.
+        modelFactory.getInformationObjectModel().addInformationObjectListener(managerFactory.getTaggingRelationManager());
+        getInfoObjectMenu().add(GUIBuilder.createCheckBoxMenuItem(getInformationNodePresenter().getEnableAutoLoadAction(), true));
+        // Visualisierung starten
+        getVisualizationManager().start();
+
     }
 
     public void stop() {

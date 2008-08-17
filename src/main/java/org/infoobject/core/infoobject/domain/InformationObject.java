@@ -36,5 +36,7 @@ public interface InformationObject {
 
     ArrayList<Tag> getTags();
 
+    List<Tagging> getTaggings(final Agent agent);
+    
     List<Tagging> getTaggings();
 }

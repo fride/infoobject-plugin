@@ -4,6 +4,8 @@ import org.infoobject.core.agent.domain.Agent;
 import org.infoobject.core.infoobject.event.InformationObjectListener;
 import org.infoobject.core.infoobject.to.MetadataTo;
 
+import java.util.List;
+
 /**
  * <p>
  * Class InformationObjectModel ZUSAMMENFASSUNG
@@ -56,5 +58,14 @@ public interface InformationObjectModel {
     InformationObjectListener[] getInformationObjectListener();
 
 
+    /**
+     * 
+     * @param name
+     * @return
+     */
+    List<InformationObject> getInformationObjects(ObjectName name);
+    
     InformationObject getInformationObject(String uri);
+
+    
 }

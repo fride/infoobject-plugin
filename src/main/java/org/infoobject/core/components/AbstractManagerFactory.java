@@ -4,7 +4,7 @@ import org.infoobject.core.agent.application.AgentManager;
 import org.infoobject.core.crawl.CrawlerManager;
 import org.infoobject.core.crawl.xml.XsltMetadataExtractor;
 import org.infoobject.core.infoobject.application.InformationObjectManager;
-import org.infoobject.core.position.application.PositionLinkRelationManager;
+import org.infoobject.magicmap.node.application.PositionLinkRelationManager;
 import org.infoobject.core.tag.application.TaggingRelationManager;
 import org.infoobject.magicmap.node.application.InformationNodeManager;
 
@@ -39,7 +39,10 @@ public abstract class AbstractManagerFactory implements ManagerFactory {
 
     public InformationNodeManager getInformationNodeManager() {
         if (informationNodeManager ==null) {
-            informationNodeManager = new InformationNodeManager(modelFactory.getInformationObjectNodeModel(), getInformationObjectManager());
+            informationNodeManager = new InformationNodeManager(
+                    modelFactory.getInformationObjectNodeModel(),
+                    modelFactory.getInformationObjectModel(), 
+                    getInformationObjectManager());
 
         }
         return informationNodeManager;
@@ -87,12 +90,18 @@ public abstract class AbstractManagerFactory implements ManagerFactory {
         return modelFactory;
     }
 
+    /**
+     * get the PositionLinkRelationManager. Will crete on and add it as a listener
+     * to the model.
+     * @return
+     */
     public PositionLinkRelationManager getPositionLinkRelationManager() {
         if (positionLinkRelationManager == null) {
             positionLinkRelationManager = new PositionLinkRelationManager(
                     modelFactory.getInformationObjectNodeModel(),
                     modelFactory.getInformationObjectNodeGraph(),
                     modelFactory.getInformationObjectModel());
+            modelFactory.getInformationObjectModel().addInformationObjectListener(positionLinkRelationManager);
         }
         return positionLinkRelationManager;
     }
@@ -107,8 +116,10 @@ public abstract class AbstractManagerFactory implements ManagerFactory {
     }
 
     public void start() {
+        modelFactory.start();
         modelFactory.getInformationObjectModel().addInformationObjectListener(getTaggingRelationManager());
-        modelFactory.getInformationObjectModel().addInformationObjectListener(getPositionLinkRelationManager());        
+        modelFactory.getInformationObjectModel().addInformationObjectListener(getPositionLinkRelationManager());
+        modelFactory.getNodeModel().addNodeModelListener(getPositionLinkRelationManager());
     }
 
     public void stop() {

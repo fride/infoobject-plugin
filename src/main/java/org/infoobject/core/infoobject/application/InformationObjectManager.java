@@ -1,6 +1,11 @@
 package org.infoobject.core.infoobject.application;
 
+import net.sf.magicmap.client.utils.AbstractModel;
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.Transformer;
+import org.apache.commons.collections15.Closure;
 import org.infoobject.core.agent.application.AgentManager;
+import org.infoobject.core.agent.domain.Agent;
 import org.infoobject.core.infoobject.dao.InformationObjectRepository;
 import org.infoobject.core.infoobject.domain.*;
 import org.infoobject.core.infoobject.to.InformationObjectTo;
@@ -9,10 +14,8 @@ import org.infoobject.core.infoobject.to.ObjectLinkingTo;
 import org.infoobject.core.infoobject.to.TaggingTo;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.WeakHashMap;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * <p>
@@ -26,12 +29,13 @@ import java.util.WeakHashMap;
  *         Date: 09.08.2008
  *         Time: 10:39:28
  */
-public class InformationObjectManager {
+public class InformationObjectManager extends AbstractModel {
     private final InformationObjectModel model;
     private final InformationObjectRepository repository;
     private WeakHashMap<InformationObject, Timestamp> loadTimes = new WeakHashMap<InformationObject, Timestamp>();
     private WeakHashMap<InformationObject, Timestamp> explode = new WeakHashMap<InformationObject, Timestamp>();
     private AgentManager agentManager;
+    private Agent agent;
 
     /**
      * 
@@ -43,6 +47,19 @@ public class InformationObjectManager {
         this.model = model;
         this.repository = repository;
         this.agentManager = agentManager;
+        this.agent = Agent.ANONYMOUS;
+    }
+
+    public void setAgent(Agent agent) {
+        if (this.agent ==  null || this.agent.equals(agent)) {
+            Agent old = this.agent;
+            this.agent = agent;
+            firePropertyChange("agent", old,agent);
+        }
+    }
+
+    public Agent getAgent() {
+        return agent;
     }
 
     /**
@@ -91,6 +108,10 @@ public class InformationObjectManager {
                 agentManager.get(linkingTo.getAgentId(), true), linkingTo.getLinkType());
     }
 
+    /**
+     * 
+     * @param tagging
+     */
     private void add(TaggingTo tagging) {
         model.addTagging(
                         tagging.getTagged(),
@@ -115,7 +136,6 @@ public class InformationObjectManager {
     }
 
     public void load(ObjectName name) {
-
         Timestamp now = new Timestamp(System.currentTimeMillis());
         final List<InformationObjectTo> list = repository.findInformationsByObject(name);
         for (InformationObjectTo to : list) {
@@ -123,27 +143,51 @@ public class InformationObjectManager {
         }
     }
 
-    public void saveTaggings(Iterable<TaggingTo> taggings) {
-        repository.saveTaggings(taggings);
-        for (TaggingTo tagging : taggings) {
+    /**
+     * 
+     * @param taggings
+     * @param uri
+     */
+    public void saveTaggings(Map<String, Boolean> taggings, final String uri) {
+        List<TaggingTo>tos = new ArrayList<TaggingTo>(taggings.size());
+        CollectionUtils.collect(taggings.entrySet(), new Transformer<Entry<String, Boolean>, TaggingTo>() {
+            public TaggingTo transform(Entry<String, Boolean> entry) {
+                return new TaggingTo(uri, entry.getKey(), entry.getValue(), getAgent().getId());
+            }
+        },tos);
+        repository.saveTaggings(tos);
+        for (TaggingTo tagging : tos) {
             add(tagging);
         }
     }
 
-    public void saveObjectLinkings(Iterable<ObjectLinkingTo> objectLinkings) {
-        repository.saveObjectLinkings(objectLinkings);
-        for (ObjectLinkingTo objectLinkingTo : objectLinkings) {
+    public void saveObjectLinkings(Map<ObjectName, String> objectLinkings, final String uri) {
+        final List<ObjectLinkingTo>tos = new ArrayList<ObjectLinkingTo>(objectLinkings.size());
+        CollectionUtils.forAllDo(objectLinkings.entrySet(), new Closure<Entry<ObjectName, String>>() {
+            public void execute(Entry<ObjectName, String> entry) {
+               tos.add(new ObjectLinkingTo(uri, entry.getKey(), entry.getValue(), getAgent().getId()));
+            }
+        });
+        repository.saveObjectLinkings(tos);
+        for (ObjectLinkingTo objectLinkingTo : tos) {
             add(objectLinkingTo);
         }
     }
 
     /**
      *
-     * @param informationMetadatas
+     * @param metadatas
      */
-    public void saveInformationMetadata(Iterable<MetadataTo> informationMetadatas) {
-        repository.saveInformationMetadata(informationMetadatas);
-        for (MetadataTo meta : informationMetadatas) {
+    public void saveInformationMetadata(List<Metadata> metadatas) {
+        final List<MetadataTo> tos = new ArrayList<MetadataTo>(metadatas.size());
+        CollectionUtils.forAllDo(metadatas, new Closure<Metadata>() {
+            public void execute(Metadata metadata) {
+                tos.add(new MetadataTo(metadata, getAgent().getId(), metadata.getCrawlDate()));
+            }
+        });
+
+        repository.saveInformationMetadata(tos);
+        for (MetadataTo meta : tos) {
             model.add(meta);
         }
     }
@@ -166,6 +210,7 @@ public class InformationObjectManager {
             model.remove(informationObject.getUri(), name);
         }
     }
+
 
 
 }

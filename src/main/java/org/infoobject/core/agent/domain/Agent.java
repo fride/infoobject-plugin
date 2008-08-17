@@ -18,7 +18,7 @@ public class Agent implements Comparable<Agent>{
     private boolean admin;
     private boolean guest;
     private String jabberID;
-    public static final Agent ANONYMOUS = new Agent("anonymous");
+    public static final Agent ANONYMOUS = new Agent("mailto:anonymous@nowhere.com");
 
     public Agent(String id) {
         this.id = id;

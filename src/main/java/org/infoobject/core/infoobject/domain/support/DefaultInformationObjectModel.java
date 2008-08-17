@@ -1,14 +1,16 @@
 package org.infoobject.core.infoobject.domain.support;
 
+import org.apache.commons.collections15.MultiMap;
+import org.apache.commons.collections15.multimap.MultiHashMap;
 import org.bushe.swing.event.EventBus;
-import org.infoobject.core.infoobject.to.MetadataTo;
+import org.infoobject.core.agent.domain.Agent;
+import org.infoobject.core.infoobject.domain.InformationObject;
+import org.infoobject.core.infoobject.domain.*;
 import org.infoobject.core.infoobject.event.Events;
+import org.infoobject.core.infoobject.event.InformationObjectListener;
 import org.infoobject.core.infoobject.event.ObjectLinkingEvent;
 import org.infoobject.core.infoobject.event.TaggingEvent;
-import org.infoobject.core.infoobject.event.InformationObjectListener;
-import org.infoobject.core.infoobject.domain.*;
-import org.infoobject.core.agent.domain.Agent;
-import org.infoobject.core.infoobject.domain.InformationObjectModel;
+import org.infoobject.core.infoobject.to.MetadataTo;
 
 import java.util.*;
 
@@ -27,8 +29,9 @@ import java.util.*;
 public class DefaultInformationObjectModel implements InformationObjectModel {
     private Map<String, DefaultInformationObject> informations = new HashMap<String, DefaultInformationObject>();
     private List<InformationObjectListener> listeners = Collections.synchronizedList(new LinkedList<InformationObjectListener>());
+    private MultiMap<ObjectName, DefaultInformationObject> objectNameMap = new MultiHashMap<ObjectName, DefaultInformationObject>();
 
-    public DefaultInformationObject getInformationObject(String uri) {
+    public InformationObject getInformationObject(String uri) {
         return informations.get(uri);
     }
 
@@ -51,7 +54,14 @@ public class DefaultInformationObjectModel implements InformationObjectModel {
         TaggingPost post = informationObject.addTaggPost(tag, agent, positive);
         fireTagging(post);
         return post;
+    }
 
+    /**
+     * @param name
+     * @return
+     */
+    public List<InformationObject> getInformationObjects(ObjectName name) {
+        return objectNameMap.containsKey(name) ? new ArrayList<InformationObject>(this.objectNameMap.get(name)) : Collections.<InformationObject>emptyList();
     }
 
     /**
@@ -68,6 +78,7 @@ public class DefaultInformationObjectModel implements InformationObjectModel {
             informations.put(uri, informationObject);
         }
         ObjectLinkPost objectLinkPost = informationObject.addObjectLink(name, agent, type);
+        objectNameMap.put(name,informationObject);
         fireObjectLinking(objectLinkPost);
         return objectLinkPost;
     }
@@ -77,7 +88,7 @@ public class DefaultInformationObjectModel implements InformationObjectModel {
         if (!informations.containsKey(uri)){
             informations.put(uri, new DefaultInformationObject(uri));
         }
-        final DefaultInformationObject informationObject = informations.get(uri);
+        final InformationObject informationObject = informations.get(uri);
         Metadata data = new Metadata(meta.getMetadata(), meta.getCrawlDate());
 
         if (informations.get(uri).setMetadata(data)) {

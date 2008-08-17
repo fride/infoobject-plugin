@@ -58,6 +58,23 @@ public class InformationObjectNode extends Node implements InformationObject {
         return false;
     }
 
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InformationObject)) return false;
+
+        InformationObject that = (InformationObject) o;
+
+        if (getUri() != null ? !getUri().equals(that.getUri()) : that.getUri() != null) return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (information != null ? information.hashCode() : 0);
+        return result;
+    }
+
     /**
      * 
      * @return
@@ -107,5 +124,14 @@ public class InformationObjectNode extends Node implements InformationObject {
 
     public List<Tagging> getTaggings() {
         return information.getTaggings();
+    }
+
+    /**
+     * 
+     * @param agent
+     * @return
+     */
+    public List<Tagging> getTaggings(Agent agent) {
+        return information.getTaggings(agent);
     }
 }

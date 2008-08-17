@@ -3,6 +3,7 @@ package org.infoobject.magicmap.node.application;
 import net.sf.magicmap.client.interfaces.NodeModelListener;
 import net.sf.magicmap.client.model.node.Node;
 import org.infoobject.core.infoobject.application.InformationObjectManager;
+import org.infoobject.core.infoobject.domain.InformationObjectModel;
 import org.infoobject.core.infoobject.domain.ObjectName;
 import org.infoobject.magicmap.node.model.InformationObjectNode;
 import org.infoobject.magicmap.node.model.InformationObjectNodeGraph;
@@ -24,8 +25,9 @@ public class InformationNodeManager {
 
     private final InformationObjectNodeModel objectNodeModel;
     private final InformationObjectNodeGraph informationNodeGraph;
+    private final InformationObjectModel informationObjectModel;
     private final InformationObjectManager informationObjectManager;
-    
+    private final InformationNodeLoader informationNodeLoader;
 
 
     /**
@@ -33,7 +35,11 @@ public class InformationNodeManager {
      * @param objectNodeModel
      * @param informationObjectManager
      */
-    public InformationNodeManager(InformationObjectNodeModel objectNodeModel, InformationObjectManager informationObjectManager) {
+    public InformationNodeManager(
+            InformationObjectNodeModel objectNodeModel,
+            InformationObjectModel informationObjectModel,
+            InformationObjectManager informationObjectManager) {
+        this.informationObjectModel = informationObjectModel;
         this.informationObjectManager = informationObjectManager;
         this.objectNodeModel = objectNodeModel;
         this.informationNodeGraph = this.objectNodeModel.getInformationObjectNodeGraph();
@@ -55,9 +61,17 @@ public class InformationNodeManager {
                 }
             }
         });
-       
+        informationNodeLoader = new InformationNodeLoader(informationObjectManager);
+        objectNodeModel.addNodeModelListener(informationNodeLoader);
+
     }
 
+    
+    public InformationNodeLoader getInformationNodeLoader() {
+        return informationNodeLoader;
+    }
+
+    
     public InformationObjectNodeModel getNodeModel() {
         return objectNodeModel;
     }
@@ -81,6 +95,8 @@ public class InformationNodeManager {
     public void expand(Node node){
         if (node.isPhysical()) {
             informationObjectManager.load(ObjectName.positionName(node.getName(), node.getModel().getServerID()));
+        } else {
+            
         }
     }
 

@@ -1,14 +1,10 @@
 package org.infoobject.core.infoobject.dao;
 
-import org.infoobject.core.infoobject.dao.InformationMetadataDao;
-import org.infoobject.core.infoobject.dao.ObjectLinkDao;
-import org.infoobject.core.infoobject.dao.TaggingDao;
+import org.infoobject.core.infoobject.domain.ObjectName;
+import org.infoobject.core.infoobject.domain.Tag;
 import org.infoobject.core.infoobject.to.MetadataTo;
 import org.infoobject.core.infoobject.to.ObjectLinkingTo;
 import org.infoobject.core.infoobject.to.TaggingTo;
-import org.infoobject.core.infoobject.dao.InformationObjectRepository;
-import org.infoobject.core.infoobject.domain.Tag;
-import org.infoobject.core.infoobject.domain.ObjectName;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,10 +39,14 @@ public abstract class AbstractInformationObjectRepository implements Information
     }
 
     public void saveTaggings(Iterable<TaggingTo> taggings) {
+        int saved = 0;
         for (TaggingTo tagging : taggings) {
             this.getTaggingDao().save(tagging);
+            saved++;
         }
-        getTaggingDao().commit();
+        if (saved > 0) {
+            getTaggingDao().commit();
+        }
     }
 
     public List<TaggingTo> findTaggings(){

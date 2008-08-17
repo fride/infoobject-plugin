@@ -11,15 +11,12 @@ import edu.uci.ics.jung.graph.impl.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.impl.UndirectedSparseVertex;
 import edu.uci.ics.jung.utils.UserData;
 import net.sf.magicmap.client.model.location.MagicGraphEvent;
+import net.sf.magicmap.client.model.node.ClientNode;
 import net.sf.magicmap.client.model.node.EdgeType;
 import net.sf.magicmap.client.model.node.Node;
 import net.sf.magicmap.client.model.node.NodeGraphListener;
-import org.infoobject.core.relation.domain.InformationRelation;
-import org.infoobject.core.relation.domain.InformationRelationEdge;
-import org.infoobject.core.relation.domain.PositionRelation.Factory;
-import org.infoobject.core.relation.domain.PositionRelationEdge;
-import org.infoobject.core.relation.domain.RelationEdge;
 import org.infoobject.core.infoobject.domain.InformationObject;
+import org.infoobject.core.relation.domain.*;
 
 import java.util.*;
 
@@ -87,7 +84,7 @@ public class InformationObjectNodeGraphImpl implements InformationObjectNodeGrap
     }
 
 
-    
+
 
     public RelationEdge getRelation(Edge edge) {
         return (RelationEdge) edge.getUserDatum("RELATION");
@@ -95,7 +92,7 @@ public class InformationObjectNodeGraphImpl implements InformationObjectNodeGrap
 
 
     /**
-     * 
+     *
      * @param relationEdge
      */
     public void updateRelation(RelationEdge relationEdge) {
@@ -150,7 +147,7 @@ public class InformationObjectNodeGraphImpl implements InformationObjectNodeGrap
         final Vertex v1 = findVertex(node, false);
         final Vertex v2 = findVertex(node1, false);
         final Edge edge = (v1 != null && v2 != null) ? v1.findEdge(v2) : null;
-        
+
         return (RelationEdge) (edge != null ? edge.getUserDatum("RELATION") : null);
     }
 
@@ -204,7 +201,7 @@ public class InformationObjectNodeGraphImpl implements InformationObjectNodeGrap
             l.edgeAdded(event);
         }
     }
-    
+
     public void addNodeGraphListener(NodeGraphListener nodeGraphListener) {
         listeners.add(nodeGraphListener);
     }
@@ -222,13 +219,16 @@ public class InformationObjectNodeGraphImpl implements InformationObjectNodeGrap
     }
 
     /**
-     * 
+     *
      * @param n1
      * @param n2
      * @param factory
      * @return
      */
-    public PositionRelationEdge addRelation(InformationObjectNode n1, Node n2, Factory factory) {
+    public PositionRelationEdge addRelation(InformationObjectNode n1, Node n2, PositionRelation.Factory factory) {
+        if (n2 instanceof ClientNode) {
+            System.out.println("sourceNode = " + n2);
+        }
         UndirectedSparseEdge edge = createJungEdge(n1, n2);
         PositionRelationEdge relationEdge = (PositionRelationEdge) edge.getUserDatum("RELATION");
         if (relationEdge == null) {

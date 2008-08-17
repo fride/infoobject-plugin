@@ -40,7 +40,7 @@ public class DefaultModelFactory implements ModelFactory {
 
     public InformationObjectNodeModel getInformationObjectNodeModel() {
         if (informationObjectNodeModel == null) {
-            informationObjectNodeModel = new InformationObjectNodeModelImpl(getInformationObjectNodeModel());
+            informationObjectNodeModel = new InformationObjectNodeModelImpl(getNodeModel());
         }
         return informationObjectNodeModel;
     }

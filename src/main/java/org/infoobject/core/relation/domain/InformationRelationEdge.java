@@ -19,6 +19,7 @@ public class InformationRelationEdge extends RelationEdge<InformationObjectNode,
 
     public InformationRelationEdge(InformationObjectNode source, InformationObjectNode target, InformationObjectNodeGraph graph) {
         super(source, target, graph);
+        if (source == target) throw new IllegalArgumentException("No self edges " + source);
     }
 
     public double getEstimatedLength() {

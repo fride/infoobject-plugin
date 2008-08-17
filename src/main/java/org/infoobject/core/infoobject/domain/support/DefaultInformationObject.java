@@ -1,5 +1,7 @@
 package org.infoobject.core.infoobject.domain.support;
 
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.Predicate;
 import org.infoobject.core.agent.domain.Agent;
 import org.infoobject.core.infoobject.domain.*;
 
@@ -99,13 +101,27 @@ public class DefaultInformationObject implements org.infoobject.core.infoobject.
         return new ArrayList<Tagging>(taggings.values());
     }
 
+    /**
+     * 
+     * @param agent
+     * @return
+     */
+    public List<Tagging> getTaggings(final Agent agent) {
+        return CollectionUtils.select(taggings.values(), new Predicate<Tagging>() {
+            public boolean evaluate(Tagging tagging) {
+                return tagging.hasAgen(agent);
+            }
+        }, new LinkedList<Tagging>());
+
+    }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof org.infoobject.core.infoobject.domain.InformationObject)) return false;
 
-        DefaultInformationObject that = (DefaultInformationObject) o;
+        org.infoobject.core.infoobject.domain.InformationObject that = (org.infoobject.core.infoobject.domain.InformationObject) o;
 
-        if (uri != null ? !uri.equals(that.uri) : that.uri != null) return false;
+        if (uri != null ? !uri.equals(that.getUri()) : that.getUri() != null) return false;
 
         return true;
     }

@@ -1,12 +1,10 @@
 package org.infoobject.magicmap.components;
 
-import net.sf.magicmap.client.gui.views.ConsoleView;
-import net.sf.magicmap.client.visualization.NodeCanvas;
 import org.infoobject.core.components.AbstractManagerFactory;
 import org.infoobject.core.components.ModelFactory;
 import org.infoobject.core.infoobject.dao.InformationObjectRepository;
-import org.infoobject.magicmap.visualization.VisualizationManager;
 import org.infoobject.openrdf.infoobject.RdfInformationObjectRepository;
+import org.infoobject.magicmap.node.application.InformationNodeLoader;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
@@ -26,20 +24,16 @@ import java.io.File;
  *         Time: 17:31:29
  */
 public class PluginManagerFactory extends AbstractManagerFactory {
-    private final ConsoleView consoleView;
-    private final NodeCanvas nodeCanvas;
     private InformationObjectRepository informationObjectRepository;
+    private InformationNodeLoader informationNodeLoader;
+    
 
-    private VisualizationManager visualizationManager;
-
-    public PluginManagerFactory(ModelFactory modelFactory, ConsoleView consoleView, NodeCanvas nodeCanvas) {
+    public PluginManagerFactory(ModelFactory modelFactory) {
         super(modelFactory);
-        this.consoleView = consoleView;
-        this.nodeCanvas = nodeCanvas;
     }
-
+    
     protected void handleException(String message, Exception ex) {
-        consoleView.append(message + ": " + ex.getMessage());
+        ex.printStackTrace();
         throw new RuntimeException(ex);
     }
 
@@ -47,7 +41,6 @@ public class PluginManagerFactory extends AbstractManagerFactory {
     public InformationObjectRepository getInformationObjectRepository() {
         if (informationObjectRepository == null) {
             File dataDir = new File(System.getProperty("user.home") + "/.mmnfo/rdf");
-            consoleView.append("Infoobjects settup with dir " + dataDir.getAbsolutePath());
             SailRepository sailRepository = new SailRepository(new MemoryStore(dataDir));
             try {
                 sailRepository.initialize();
@@ -59,11 +52,12 @@ public class PluginManagerFactory extends AbstractManagerFactory {
         return informationObjectRepository;
     }
 
-    public VisualizationManager getVisualizationManager() {
-        if (visualizationManager == null) {
-            visualizationManager = new VisualizationManager(getModelFactory().getInformationObjectNodeGraph(), nodeCanvas);
+
+    public InformationNodeLoader getInformationNodeLoader() {
+        if (informationNodeLoader == null) {
+            informationNodeLoader = new InformationNodeLoader(getInformationObjectManager());
         }
-        return visualizationManager;
+        return informationNodeLoader;
     }
 
     @Override

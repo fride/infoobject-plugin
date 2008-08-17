@@ -6,15 +6,12 @@ import net.sf.magicmap.client.plugin.IPluginDescriptor;
 import net.sf.magicmap.client.utils.Settings;
 import org.infoobject.core.components.DefaultModelFactory;
 import org.infoobject.core.components.ModelFactory;
-import org.infoobject.core.infoobject.ui.model.InformationObjectPresenter;
-import org.infoobject.core.position.application.PositionLinkRelationManager;
+import org.infoobject.magicmap.node.application.PositionLinkRelationManager;
 import org.infoobject.core.tag.application.TaggingRelationManager;
 import org.infoobject.magicmap.components.GuiComponentFactory;
 import org.infoobject.magicmap.components.PluginManagerFactory;
-import org.infoobject.magicmap.node.application.InformationNodeLoader;
-import org.infoobject.magicmap.visualization.VisualizationManager;
+import org.infoobject.magicmap.visualization.application.VisualizationManager;
 
-import javax.swing.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +32,6 @@ public class InformationObjectPlugin extends AbstractPlugin {
     private VisualizationManager visualizationManager;
     private IController controller;
     private List<Exception> startExceptions = new LinkedList<Exception>();
-    private InformationObjectPresenter informationPresenter;
 
     private TaggingRelationManager taggingRelationManager;
     private GuiComponentFactory factory;
@@ -72,22 +68,17 @@ public class InformationObjectPlugin extends AbstractPlugin {
 
     @Override
     public void loadMap() {
-        super.loadMap();
-        managerFactory.getVisualizationManager().setMap(modelFactory.getInformationObjectNodeModel().getCurrentMap());
+        factory.getVisualizationManager().setMap(modelFactory.getInformationObjectNodeModel().getCurrentMap());
     }
 
     @Override
     public void setup(Settings settings) {
         super.setup(settings);
-        factory = new GuiComponentFactory(modelFactory, managerFactory);
         modelFactory = new DefaultModelFactory(controller);
-        managerFactory = new PluginManagerFactory(modelFactory, factory.getConsoleView(), factory.getNodeCanvas());
+        managerFactory = new PluginManagerFactory(modelFactory);
+        factory = new GuiComponentFactory(modelFactory, managerFactory);
         try {
-            informationPresenter = factory.getInformationObjectPresenter();
             factory.start();
-            setupActions(factory);
-
-
 
             positionLinkRelationManager = new PositionLinkRelationManager(modelFactory.getInformationObjectNodeModel(), modelFactory.getInformationObjectNodeGraph(), modelFactory.getInformationObjectModel());
             registerNodeModelListeners();
@@ -109,21 +100,7 @@ public class InformationObjectPlugin extends AbstractPlugin {
     }
 
     private void registerNodeModelListeners() {
-        modelFactory.getInformationObjectNodeModel().addNodeModelListener(new InformationNodeLoader(managerFactory,factory));
-        taggingRelationManager = new TaggingRelationManager(modelFactory.getInformationObjectNodeModel());
-        modelFactory.getInformationObjectModel().addInformationObjectListener(taggingRelationManager);
+        
     }
-
-    private void setupActions(GuiComponentFactory factory) {
-        //factory.getMapView().getMenuContainer().addSeperator();
-        factory.getMapView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getShowCreateAnEditDialogAction()));
-        factory.getMapView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getDeleteInformationObjectAction()));
-
-        //factory.getMapView().getMenuContainer().addSeperator();
-        factory.getOutlineView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getShowCreateAnEditDialogAction()));
-        factory.getOutlineView().getMenuContainer().addNodeMenuItem(informationPresenter, new JMenuItem(informationPresenter.getDeleteInformationObjectAction()));
-    }
-
-
 
 }
